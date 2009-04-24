@@ -1,6 +1,6 @@
 module Accounting
   class Bank < ActiveRecord::Base
-    has_many :accounts
+    has_many :bank_accounts
 
     has_vcards
 
