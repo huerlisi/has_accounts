@@ -6,6 +6,16 @@ module Accounting
     has_many :debit_bookings, :class_name => "Booking", :foreign_key => "debit_account_id"
     
     has_many :bookings, :finder_sql => 'SELECT * FROM bookings WHERE credit_account_id = #{id} OR debit_account_id = #{id} ORDER BY value_date'
+
+    def saldo
+      credit_amount = credit_bookings.sum(:amount)
+      debit_amount = debit_bookings.sum(:amount)
+
+      credit_amount ||= 0
+      debit_amount ||= 0
+
+      return credit_amount - debit_amount
+    end
   end
 
   module ClassMethods
