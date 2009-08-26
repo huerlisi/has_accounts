@@ -3,4 +3,4 @@ require 'accounting/account'
 
 ActiveRecord::Base.extend(Accounting::ClassMethods)
 
-require 'accounting/core_ext/float'
+require 'accounting/core_ext/rounding'
