@@ -10,7 +10,7 @@ module Accounting
       when :short
         "#{value_date.strftime('%d.%m.%Y')}: CHF #{sprintf('%0.2f', amount.currency_round)} #{debit_account.code} => #{credit_account.code}"
       else
-        "CHF #{sprintf('%0.2f', amount.currency_round)} am #{value_date.strftime('%d.%m.%Y')} von #{debit_account.title} nach #{credit_account.title}"
+        "vom #{value_date.strftime('%d.%m.%Y')} über CHF #{sprintf('%0.2f', amount.currency_round)} von #{debit_account.title} nach #{credit_account.title}"
       end
     end
 
