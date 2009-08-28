@@ -1,6 +1,6 @@
 module Accounting
   class Booking < ActiveRecord::Base
-    validates_presence_of :debit_account, :credit_account, :amount, :value_date
+    validates_presence_of :debit_account, :credit_account, :title, :amount, :value_date
   
     belongs_to :debit_account, :foreign_key => 'debit_account_id', :class_name => "Account"
     belongs_to :credit_account, :foreign_key => 'credit_account_id', :class_name => "Account"
