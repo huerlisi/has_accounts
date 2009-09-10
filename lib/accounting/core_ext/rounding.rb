@@ -25,3 +25,7 @@ end
 class BigDecimal #:nodoc:
   include Accounting::CoreExtensions::Rounding
 end
+
+class Fixnum #:nodoc:
+  include Accounting::CoreExtensions::Rounding
+end

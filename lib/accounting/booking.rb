@@ -7,6 +7,7 @@ module Accounting
 
     belongs_to :reference, :polymorphic => true
 
+    # Standard methods
     def to_s(format = :default)
       case format
       when :short
@@ -24,6 +25,14 @@ module Accounting
       else
         return 0.0
       end
+    end
+
+    # Hooks
+    after_save :notify_references
+
+    private
+    def notify_references
+      reference.booking_saved(self) if reference.respond_to?(:booking_saved)
     end
   end
 end
