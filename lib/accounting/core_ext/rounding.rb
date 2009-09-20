@@ -15,6 +15,18 @@ module Accounting #:nodoc:
         end
       end
     end
+    
+    module BigDecimal
+      module Rounding
+        def currency_round
+          if self.nil?
+            return BigDecimal.new("0")
+          else
+            return (self * 20).round / 20
+          end
+        end
+      end
+    end
   end
 end
 
@@ -23,7 +35,7 @@ class Float #:nodoc:
 end
 
 class BigDecimal #:nodoc:
-  include Accounting::CoreExtensions::Rounding
+  include Accounting::CoreExtensions::BigDecimal::Rounding
 end
 
 class Fixnum #:nodoc:
