@@ -11,9 +11,10 @@ module Accounting
     def to_s(format = :default)
       case format
       when :short
-        "#{value_date.strftime('%d.%m.%Y')}: CHF #{sprintf('%0.2f', amount.currency_round)} #{debit_account.code} => #{credit_account.code}"
+        "#{value_date.strftime('%d.%m.%Y')}: #{credit_account.code} / #{debit_account.code} CHF #{sprintf('%0.2f', amount.currency_round)} "
       else
-        "vom #{value_date.strftime('%d.%m.%Y')} über CHF #{sprintf('%0.2f', amount.currency_round)} von #{debit_account.title} nach #{credit_account.title}"
+        "#{value_date.strftime('%d.%m.%Y')}: #{credit_account.title} (#{credit_account.code}) an #{debit_account.title} (#{debit_account.code}) CHF #{sprintf('%0.2f', amount.currency_round)}, #{title} " +
+          (comments.blank? ? "" :"(#{comments})")
       end
     end
 
