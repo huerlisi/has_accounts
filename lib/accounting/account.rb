@@ -7,6 +7,16 @@ module Accounting
     
     has_many :bookings, :finder_sql => 'SELECT * FROM bookings WHERE credit_account_id = #{id} OR debit_account_id = #{id} ORDER BY value_date'
 
+    # Standard methods
+    def to_s(format = :default)
+      case format
+      when :short
+        "#{code}: CHF #{sprintf('%0.2f', saldo.currency_round)}"
+      else
+        "#{title} (#{code}): CHF #{sprintf('%0.2f', saldo.currency_round)}"
+      end
+    end
+
     def saldo
       credit_amount = credit_bookings.sum(:amount)
       debit_amount = debit_bookings.sum(:amount)
