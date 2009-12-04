@@ -8,18 +8,27 @@ module Accounting
     has_many :bookings, :finder_sql => 'SELECT * FROM bookings WHERE credit_account_id = #{id} OR debit_account_id = #{id} ORDER BY value_date'
 
     # Standard methods
-    def to_s(format = :default)
+    def to_s(value_range = Date.today, format = :default)
       case format
       when :short
-        "#{code}: CHF #{sprintf('%0.2f', saldo.currency_round)}"
+        "#{code}: CHF #{sprintf('%0.2f', saldo(value_range).currency_round)}"
       else
-        "#{title} (#{code}): CHF #{sprintf('%0.2f', saldo.currency_round)}"
+        "#{title} (#{code}): CHF #{sprintf('%0.2f', saldo(value_range).currency_round)}"
       end
     end
 
-    def saldo
-      credit_amount = credit_bookings.sum(:amount)
-      debit_amount = debit_bookings.sum(:amount)
+    def self.overview(value_range = Date.today, format = :default)
+      Accounting::Account.all.map{|a| a.to_s(value_range, format)}
+    end
+    
+    def saldo(value_range = Date.today)
+      if value_range.is_a? Range
+        credit_amount = credit_bookings.sum(:amount, :conditions => {:value_date => value_range})
+        debit_amount = debit_bookings.sum(:amount, :conditions => {:value_date => value_range})
+      else
+        credit_amount = credit_bookings.sum(:amount, :conditions => ["value_date <= ?", value_range])
+        debit_amount = debit_bookings.sum(:amount, :conditions => ["value_date <= ?", value_range])
+      end
 
       credit_amount ||= 0
       debit_amount ||= 0
