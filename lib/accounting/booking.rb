@@ -18,9 +18,9 @@ module Accounting
     end
 
     def accounted_amount(account)
-      if debit_account == account
+      if credit_account == account
         return amount
-      elsif credit_account == account
+      elsif debit_account == account
         return -(amount)
       else
         return 0.0
