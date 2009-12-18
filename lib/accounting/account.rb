@@ -5,7 +5,7 @@ module Accounting
     has_many :credit_bookings, :class_name => "Booking", :foreign_key => "credit_account_id"
     has_many :debit_bookings, :class_name => "Booking", :foreign_key => "debit_account_id"
     
-    has_many :bookings, :finder_sql => 'SELECT * FROM bookings WHERE credit_account_id = #{id} OR debit_account_id = #{id} ORDER BY value_date'
+    has_many :bookings, :finder_sql => 'SELECT * FROM bookings WHERE credit_account_id = #{id} OR debit_account_id = #{id} ORDER BY value_date, id'
 
     # Standard methods
     def to_s(value_range = Date.today, format = :default)
@@ -21,17 +21,38 @@ module Accounting
       Accounting::Account.all.map{|a| a.to_s(value_range, format)}
     end
     
-    def saldo(value_range = Date.today)
-      if value_range.is_a? Range
-        credit_amount = credit_bookings.sum(:amount, :conditions => {:value_date => value_range})
-        debit_amount = debit_bookings.sum(:amount, :conditions => {:value_date => value_range})
+    def turnover(selector = Date.today, inclusive = true)
+      if selector.is_a? Range or selector.is_a? Array
+        if selector.first.is_a? Accounting::Booking
+          exclusion_condition = "AND NOT (:id = :first_id OR :id = :last_id)" unless inclusive
+          condition = ["(value_date BETWEEN :first_value_date AND :latest_value_date) AND (id BETWEEN :first_id AND :last_id) #{exclusion_condition}", {
+             :first_value_date => selector.first.value_date,
+             :latest_value_date => selector.last.value_date,
+             :first_id => selector.first.id,
+             :last_id => selector.last.id
+           }]
+        elsif
+          # TODO support inclusive param
+          condition = {:value_date => selector}
+        end
       else
-        credit_amount = credit_bookings.sum(:amount, :conditions => ["value_date <= ?", value_range])
-        debit_amount = debit_bookings.sum(:amount, :conditions => ["value_date <= ?", value_range])
+        if selector.is_a? Accounting::Booking
+          equality = "=" if inclusive
+          condition = ["(value_date < :value_date) OR (value_date = :value_date AND id <#{equality} :id)", {:value_date => selector.value_date, :id => selector.id}]
+        else
+          equality = "=" if inclusive
+          condition = ["value_date <#{equality} ?", selector]
+        end
       end
 
-      credit_amount ||= 0
-      debit_amount ||= 0
+      credit_amount = credit_bookings.sum(:amount, :conditions => condition)
+      debit_amount = debit_bookings.sum(:amount, :conditions => condition)
+      
+      [credit_amount || 0.0, debit_amount || 0.0]
+    end
+    
+    def saldo(selector = nil)
+      credit_amount, debit_amount = turnover(selector)
 
       return credit_amount - debit_amount
     end
