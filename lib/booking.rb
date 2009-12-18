@@ -10,9 +10,9 @@ class Booking < ActiveRecord::Base
   def to_s(format = :default)
     case format
     when :short
-      "#{value_date.strftime('%d.%m.%Y')}: #{credit_account.code} / #{debit_account.code} CHF #{sprintf('%0.2f', amount.currency_round)} "
+      "#{value_date.strftime('%d.%m.%Y')}: #{credit_account.code} / #{debit_account.code} CHF #{amount_as_string} "
     else
-      "#{value_date.strftime('%d.%m.%Y')}: #{credit_account.title} (#{credit_account.code}) an #{debit_account.title} (#{debit_account.code}) CHF #{sprintf('%0.2f', amount.currency_round)}, #{title} " +
+      "#{value_date.strftime('%d.%m.%Y')}: #{credit_account.title} (#{credit_account.code}) an #{debit_account.title} (#{debit_account.code}) CHF #{amount_as_string}, #{title} " +
         (comments.blank? ? "" :"(#{comments})")
     end
   end
@@ -27,6 +27,14 @@ class Booking < ActiveRecord::Base
     end
   end
 
+  def amount_as_string
+    '%0.2f' % amount.currency_round
+  end
+
+  def amount_as_string=(value)
+    self.amount = value
+  end
+  
   # Hooks
   after_save :notify_references
 
