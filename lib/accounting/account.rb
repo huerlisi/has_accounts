@@ -59,8 +59,8 @@ module Accounting
       [credit_amount || 0.0, debit_amount || 0.0]
     end
     
-    def saldo(selector = Date.today)
-      credit_amount, debit_amount = turnover(selector)
+    def saldo(selector = Date.today, inclusive = true)
+      credit_amount, debit_amount = turnover(selector, inclusive)
 
       return credit_amount - debit_amount
     end
