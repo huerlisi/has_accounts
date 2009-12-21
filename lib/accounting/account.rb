@@ -24,13 +24,21 @@ module Accounting
     def turnover(selector = Date.today, inclusive = true)
       if selector.is_a? Range or selector.is_a? Array
         if selector.first.is_a? Accounting::Booking
-          exclusion_condition = "AND NOT (:id = :first_id OR :id = :last_id)" unless inclusive
-          condition = ["(value_date BETWEEN :first_value_date AND :latest_value_date) AND (id BETWEEN :first_id AND :last_id) #{exclusion_condition}", {
-             :first_value_date => selector.first.value_date,
-             :latest_value_date => selector.last.value_date,
-             :first_id => selector.first.id,
-             :last_id => selector.last.id
-           }]
+          equality = "=" if inclusive
+          if selector.first.value_date == selector.last.value_date
+            condition = ["value_date = :value_date AND id >#{equality} :first_id AND id <#{equality} :last_id", {
+              :value_date => selector.first.value_date,
+              :first_id => selector.first.id,
+              :last_id => selector.last.id
+            }]
+          else
+            condition = ["(value_date > :first_value_date AND value_date < :latest_value_date) OR (value_date = :first_value_date AND id >#{equality} :first_id) OR (value_date = :latest_value_date AND id <#{equality} :last_id)", {
+              :first_value_date => selector.first.value_date,
+              :latest_value_date => selector.last.value_date,
+              :first_id => selector.first.id,
+              :last_id => selector.last.id
+            }]
+          end
         elsif
           # TODO support inclusive param
           condition = {:value_date => selector}
