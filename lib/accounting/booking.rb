@@ -5,6 +5,10 @@ module Accounting
     belongs_to :debit_account, :foreign_key => 'debit_account_id', :class_name => "Account"
     belongs_to :credit_account, :foreign_key => 'credit_account_id', :class_name => "Account"
 
+    named_scope :by_account, lambda {|account_id|
+      { :conditions => ["debit_account_id = :account_id OR credit_account_id = :account_id", {:account_id => account_id}] }
+    }
+    
     belongs_to :reference, :polymorphic => true
 
     # Standard methods
