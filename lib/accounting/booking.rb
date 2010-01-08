@@ -11,6 +11,16 @@ module Accounting
       { :conditions => ["debit_account_id = :account_id OR credit_account_id = :account_id", {:account_id => account_id}] }
     }
 
+    def self.scope_by_value_date(value_date)
+      scoping = self.default_scoping - [@by_value_scope]
+      
+      @by_value_scope = {:find => {:conditions => {:value_date => value_date}}}
+      scoping << @by_value_scope
+      
+      Thread.current["#{self}_scoped_methods"] = nil
+      self.default_scoping = scoping
+    end
+    
     # Standard methods
     def to_s(format = :default)
       case format
