@@ -1,15 +1,15 @@
 module Accounting
   class Booking < ActiveRecord::Base
+    # Validation
     validates_presence_of :debit_account, :credit_account, :title, :amount, :value_date
   
     belongs_to :debit_account, :foreign_key => 'debit_account_id', :class_name => "Account"
     belongs_to :credit_account, :foreign_key => 'credit_account_id', :class_name => "Account"
 
+    # Scoping
     named_scope :by_account, lambda {|account_id|
       { :conditions => ["debit_account_id = :account_id OR credit_account_id = :account_id", {:account_id => account_id}] }
     }
-    
-    belongs_to :reference, :polymorphic => true
 
     # Standard methods
     def to_s(format = :default)
@@ -22,6 +22,7 @@ module Accounting
       end
     end
 
+    # Helpers
     def accounted_amount(account)
       if credit_account == account
         return amount
@@ -40,7 +41,8 @@ module Accounting
       self.amount = value
     end
     
-    # Hooks
+    # Reference
+    belongs_to :reference, :polymorphic => true
     after_save :notify_references
 
     private
