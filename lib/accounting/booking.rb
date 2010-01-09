@@ -21,6 +21,14 @@ module Accounting
       self.default_scoping = scoping
     end
     
+    def self.filter(controller, &block)
+      if controller.value_date_scope
+        with_scope(:find => {:conditions => {:value_date => controller.value_date_scope}}, &block)
+      else
+        block.call
+      end
+    end
+    
     # Standard methods
     def to_s(format = :default)
       case format
