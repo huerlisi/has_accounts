@@ -9,7 +9,17 @@ module Accounting
     # Scoping
     named_scope :by_account, lambda {|account_id|
       { :conditions => ["debit_account_id = :account_id OR credit_account_id = :account_id", {:account_id => account_id}] }
-    }
+    } do
+      # Returns array of all booking titles
+      def titles
+        find(:all, :group => :title).map{|booking| booking.title}
+      end
+    end
+
+    # Returns array of all years we have bookings for
+    def self.fiscal_years
+      find(:all, :select => "year(value_date) AS year", :group => "year(value_date)").map{|booking| booking.year}
+    end
 
     def self.scope_by_value_date(value_date)
       scoping = self.default_scoping - [@by_value_scope]
