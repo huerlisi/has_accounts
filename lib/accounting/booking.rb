@@ -10,9 +10,16 @@ module Accounting
     named_scope :by_account, lambda {|account_id|
       { :conditions => ["debit_account_id = :account_id OR credit_account_id = :account_id", {:account_id => account_id}] }
     } do
-      # Returns array of all booking titles
+      # Returns array of all booking titles.
       def titles
         find(:all, :group => :title).map{|booking| booking.title}
+      end
+      
+      # Statistics per booking title.
+      #
+      # The statistics are an array of hashes with keys title, count, sum, average.
+      def statistics
+        find(:all, :select => "title, count(*) AS count, sum(amount) AS sum, avg(amount) AS avg", :group => :title).map{|stat| stat.attributes}
       end
     end
 
