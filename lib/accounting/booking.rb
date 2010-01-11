@@ -25,7 +25,9 @@ module Accounting
 
     # Returns array of all years we have bookings for
     def self.fiscal_years
-      find(:all, :select => "year(value_date) AS year", :group => "year(value_date)").map{|booking| booking.year}
+      with_exclusive_scope do
+        find(:all, :select => "year(value_date) AS year", :group => "year(value_date)").map{|booking| booking.year}
+      end
     end
 
     def self.scope_by_value_date(value_date)
