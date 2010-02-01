@@ -73,7 +73,7 @@ module Accounting
     end
 
     def amount_as_string
-      '%0.2f' % amount.currency_round
+      '%0.2f' % amount
     end
     
     def amount_as_string=(value)
