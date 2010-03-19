@@ -1,13 +1,28 @@
-Accounting
-==========
+has_accounts
+============
 
-Introduction goes here.
+Rails plugin providing financal accounting models and helpers.
 
 
 Example
 =======
 
-Example goes here.
+There is a new class method made available to ActiveRecord::Base
+by this plugin:
 
+* has_accounts(options = {})
 
-Copyright (c) 2008 [name of plugin creator], released under the MIT license
+Use it like this:
+
+class Doctor < ActiveRecord::Base
+  has_vcards
+end
+
+License
+=======
+
+Copyright (c) 2008 Agrabah <http://www.agrabah.ch>
+Copyright (c) 2008-2010 Simon Hürlimann <simon.huerlimann@cyt.ch>
+Copyright (c) 2008-2010 ZytoLabor <http://www.zyto-labor.com>
+
+Released under the MIT license.
