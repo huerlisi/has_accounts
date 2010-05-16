@@ -8,6 +8,7 @@ module Accounting
 
     # Scoping
     named_scope :by_value_date, lambda {|value_date| { :conditions => { :value_date => value_date } } }
+    named_scope :by_value_period, lambda {|from, to| { :conditions => { :value_date => from..to } } }
     
     named_scope :by_account, lambda {|account_id|
       { :conditions => ["debit_account_id = :account_id OR credit_account_id = :account_id", {:account_id => account_id}] }
