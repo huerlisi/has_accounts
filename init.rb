@@ -1,6 +1,3 @@
 # Include hook code here
-require 'accounting/account'
-
-ActiveRecord::Base.extend(Accounting::ClassMethods)
-
-require 'accounting/core_ext/rounding'
+require 'has_accounts/class_methods'
+require 'has_accounts/core_ext/rounding'

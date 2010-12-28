@@ -1,4 +1,4 @@
-module Accounting #:nodoc:
+module HasAccounts #:nodoc:
   module CoreExtensions #:nodoc:
     module Rounding
       # Rounds the float according to currency rules.
@@ -31,13 +31,13 @@ module Accounting #:nodoc:
 end
 
 class Float #:nodoc:
-  include Accounting::CoreExtensions::Rounding
+  include HasAccounts::CoreExtensions::Rounding
 end
 
 class BigDecimal #:nodoc:
-  include Accounting::CoreExtensions::BigDecimal::Rounding
+  include HasAccounts::CoreExtensions::BigDecimal::Rounding
 end
 
 class Fixnum #:nodoc:
-  include Accounting::CoreExtensions::Rounding
+  include HasAccounts::CoreExtensions::Rounding
 end
