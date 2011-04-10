@@ -26,11 +26,6 @@ module HasAccounts
     end
 
     module ClassMethods
-      def sidebar(options = true)
-        if options.is_a? TrueClass
-          self.sidebars = ["#{controller_name}/sidebar"]
-        end
-      end
     end
     
     module InstanceMethods
