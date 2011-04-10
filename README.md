@@ -15,16 +15,19 @@ In Rails 3 simply add
 Example
 =======
 
-There is a new class method made available to ActiveRecord::Base
-by this plugin:
+A few models are available:
 
-* has_accounts(options = {})
+  class Booking
+  class Account
+  class AccountType
 
-Use it like this:
+There's also a ready to use module available to attach accountable
+functionality to existing models.
 
-class Doctor < ActiveRecord::Base
-  has_vcards
-end
+To use it, simply add the following to your Model:
+
+  include HasAccounts::Model
+
 
 License
 =======
