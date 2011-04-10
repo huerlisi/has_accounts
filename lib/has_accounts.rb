@@ -1,0 +1,1 @@
+require 'has_accounts/railtie' if defined?(::Rails::Railtie)
