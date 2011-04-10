@@ -4,6 +4,14 @@ has_accounts
 Rails plugin providing financal accounting models and helpers.
 
 
+Install
+=======
+
+In Rails 3 simply add
+
+  gem 'has_accounts'
+
+
 Example
 =======
 
@@ -22,7 +30,8 @@ License
 =======
 
 Copyright (c) 2008 Agrabah <http://www.agrabah.ch>
-Copyright (c) 2008-2010 Simon Hürlimann <simon.huerlimann@cyt.ch>
+Copyright (c) 2008-2011 Simon Hürlimann <simon.huerlimann@cyt.ch>
+Copyright (c) 2010-2011 CyT <http://www.cyt.ch>
 Copyright (c) 2008-2010 ZytoLabor <http://www.zyto-labor.com>
 
 Released under the MIT license.
