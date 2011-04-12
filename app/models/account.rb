@@ -83,8 +83,16 @@ class Account < ActiveRecord::Base
           }]
         end
       elsif
-        # TODO support inclusive param
-        condition = {:value_date => selector}
+        if selector.first == selector.last
+          condition = ["date(value_date) = :value_date", {
+            :value_date => selector.first
+          }]
+        else
+          condition = ["date(value_date) BETWEEN :first_value_date AND :latest_value_date", {
+            :first_value_date => selector.first,
+            :latest_value_date => selector.last
+          }]
+        end
       end
     else
       if selector.is_a? Booking
@@ -93,7 +101,7 @@ class Account < ActiveRecord::Base
         condition = ["(value_date < :value_date) OR (date(value_date) = :value_date AND id <#{equality} :id)", {:value_date => selector.value_date, :id => selector.id}]
       else
         equality = "=" if inclusive
-        condition = ["value_date <#{equality} ?", selector]
+        condition = ["date(value_date) <#{equality} ?", selector]
       end
     end
 
