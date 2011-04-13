@@ -3,10 +3,31 @@ class Booking < ActiveRecord::Base
   validates_presence_of :debit_account, :credit_account, :title, :amount, :value_date
   validates_time :value_date
 
-  # Associations
+  # Account
   belongs_to :debit_account, :foreign_key => 'debit_account_id', :class_name => "Account"
   belongs_to :credit_account, :foreign_key => 'credit_account_id', :class_name => "Account"
 
+  def direct_account
+    return nil unless reference
+    
+    return reference.direct_account if reference.respond_to? :direct_account
+  end
+  
+  def contra_account(account = nil)
+    # Derive from direct_account if available
+    account ||= direct_account
+
+    return unless account
+
+    if debit_account == account
+      return credit_account
+    elsif credit_account == account
+      return debit_account
+    else
+      return nil
+    end
+  end
+  
   # Scoping
   default_scope order('value_date, id')
 
