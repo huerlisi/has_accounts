@@ -34,9 +34,16 @@ module HasAccounts
         self.class.direct_account
       end
 
-      def build_booking
-        booking_template = BookingTemplate.find_by_code(self.class.to_s.underscore + ':invoice')
+      # Build booking
+      def build_booking(params = {}, template_code = nil)
+        template_code ||= self.class.to_s.underscore + ':invoice'
+        booking_template = BookingTemplate.find_by_code(template_code)
         
+        # Prepare booking parameters
+        booking_params = {:value_date => value_date, :amount => amount}
+        booking_params.merge!(params)
+
+        # Build and assign booking
         booking = booking_template.build_booking(:value_date => value_date, :amount => amount)
         bookings << booking
         
