@@ -54,8 +54,8 @@ module HasAccounts
         booking
       end
 
-      def balance(value_date = nil)
-        bookings.direct_balance(value_date)
+      def balance(value_date = nil, direct_account = nil)
+        bookings.direct_balance(value_date, direct_account)
       end
     end
   end
