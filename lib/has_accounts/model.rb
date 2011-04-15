@@ -40,11 +40,15 @@ module HasAccounts
         booking_template = BookingTemplate.find_by_code(template_code)
         
         # Prepare booking parameters
-        booking_params = {:value_date => value_date, :amount => amount}
+        booking_params = {
+          :value_date      => value_date,
+          :reference_type  => self.class.name,
+          :reference_id    => self.id
+        }
         booking_params.merge!(params)
 
         # Build and assign booking
-        booking = booking_template.build_booking(:value_date => value_date, :amount => amount)
+        booking = booking_template.build_booking(booking_params)
         bookings << booking
         
         booking
