@@ -155,6 +155,23 @@ class Booking < ActiveRecord::Base
   def booking_template_id=(value)
   end
   
+  # Helpers
+  def split(amount, params = {})
+    # Clone
+    new_booking = self.clone
+
+    # Set amount
+    new_booking[:amount] = amount
+    self.amount -= amount
+    
+    # Update attributes
+    params.each{|key, value|
+      new_booking[key] = value
+    }
+    
+    [self, new_booking]
+  end
+  
   # Reference
   belongs_to :reference, :polymorphic => true
   after_save :notify_references
