@@ -42,8 +42,7 @@ module HasAccounts
         # Prepare booking parameters
         booking_params = {
           :value_date      => value_date,
-          :reference_type  => self.class.name,
-          :reference_id    => self.id
+          :reference       => self
         }
         booking_params.merge!(params)
 
