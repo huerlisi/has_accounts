@@ -22,6 +22,10 @@ ActiveRecord::Migrator.migrate File.expand_path("../dummy/db/migrate/", __FILE__
 # Load support files
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
+# Prepare Factory Girl
+require 'factory_girl'
+Dir["#{File.dirname(__FILE__)}/factories/**/*.rb"].each { |f| require f }
+
 RSpec.configure do |config|
   # Remove this line if you don't want RSpec's should and should_not
   # methods or matchers
