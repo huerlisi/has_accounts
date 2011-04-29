@@ -1,16 +1,20 @@
+# encoding: UTF-8
+require 'rubygems'
+begin
+  require 'bundler/setup'
+rescue LoadError
+  puts 'You must `gem install bundler` and `bundle install` to run rake tasks'
+end
+
 require 'rake'
-require 'rake/testtask'
 require 'rake/rdoctask'
 
-desc 'Default: run unit tests.'
-task :default => :test
+require 'rspec/core'
+require 'rspec/core/rake_task'
 
-desc 'Test the has_accounts plugin.'
-Rake::TestTask.new(:test) do |t|
-  t.libs << 'lib'
-  t.pattern = 'test/**/*_test.rb'
-  t.verbose = true
-end
+RSpec::Core::RakeTask.new(:spec)
+
+task :default => :spec
 
 desc 'Generate documentation for the has_accounts plugin.'
 Rake::RDocTask.new(:rdoc) do |rdoc|
