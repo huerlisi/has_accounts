@@ -14,7 +14,7 @@ module HasAccounts
           balance = BigDecimal.new('0')
 
           direct_bookings = scoped
-          direct_bookings = direct_bookings.where("value_date <= ?", value_date) if value_date
+          direct_bookings = direct_bookings.where("date(value_date) <= ?", value_date) if value_date
 
           for booking in direct_bookings.all
             balance += booking.accounted_amount(direct_account)
