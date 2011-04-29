@@ -13,9 +13,16 @@ module HasAccounts
           direct_account ||= proxy_owner.direct_account
           balance = BigDecimal.new('0')
 
-          direct_bookings = scoped
-          direct_bookings = direct_bookings.where("date(value_date) <= ?", value_date) if value_date
+          # Scope by value_date
+          if value_date.is_a? Range or value_date.is_a? Array
+            direct_bookings = where("date(value_date) BETWEEN :from AND :to", :from => value_date.first, :to => value_date.last)
+          elsif value_date
+            direct_bookings = where("date(value_date) <= ?", value_date) if value_date
+          else
+            direct_bookings = scoped
+          end
 
+          # Accumulate
           for booking in direct_bookings.all
             balance += booking.accounted_amount(direct_account)
           end
