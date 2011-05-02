@@ -25,6 +25,10 @@ class Account < ActiveRecord::Base
     [3, 4, 6].include? account_type_id
   end
 
+  scope :by_type, lambda {|value| includes(:account_type).where('account_types.name' => value.underscore)} do
+    include AccountScopeExtension
+  end
+  
   scope :current_assets, where('account_type_id = 1') do
     include AccountScopeExtension
   end
