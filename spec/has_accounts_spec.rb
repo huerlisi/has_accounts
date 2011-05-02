@@ -16,9 +16,3 @@ describe Invoice do
     its(:direct_balance) { should == BigDecimal.new('0') }
   end
 end
-
-describe Booking do
-  subject { FactoryGirl.build :booking }
-  
-  its(:title) { should == 'Simple Booking' }
-end
