@@ -74,24 +74,6 @@ class Booking < ActiveRecord::Base
     end
   end
 
-  def self.scope_by_value_date(value_date)
-    scoping = self.default_scoping - [@by_value_scope]
-    
-    @by_value_scope = {:find => {:conditions => {:value_date => value_date}}}
-    scoping << @by_value_scope
-    
-    Thread.current["#{self}_scoped_methods"] = nil
-    self.default_scoping = scoping
-  end
-  
-  def self.filter(controller, &block)
-    if controller.value_date_scope
-      with_scope(:find => {:conditions => {:value_date => controller.value_date_scope}}, &block)
-    else
-      block.call
-    end
-  end
-  
   # Standard methods
   def to_s(format = :default)
     case format
