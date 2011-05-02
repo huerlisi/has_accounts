@@ -16,6 +16,7 @@ class Account < ActiveRecord::Base
   # Account Type
   # ============
   belongs_to :account_type
+  validates_presence_of :account_type
 
   def is_asset_account?
     Account.by_type(['current_assets', 'capital_assets', 'costs']).exists?(self)
