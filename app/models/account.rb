@@ -18,33 +18,14 @@ class Account < ActiveRecord::Base
   belongs_to :account_type
 
   def is_asset_account?
-    [1, 2, 5].include? account_type_id
+    Account.by_type(['current_assets', 'capital_assets', 'costs']).exists?(self)
   end
   
   def is_liability_account?
-    [3, 4, 6].include? account_type_id
+    !is_asset_account?
   end
 
-  scope :by_type, lambda {|value| includes(:account_type).where('account_types.name' => value.underscore)} do
-    include AccountScopeExtension
-  end
-  
-  scope :current_assets, where('account_type_id = 1') do
-    include AccountScopeExtension
-  end
-  scope :capital_assets, where('account_type_id = 2') do
-    include AccountScopeExtension
-  end
-  scope :outside_capital, where('account_type_id = 3') do
-    include AccountScopeExtension
-  end
-  scope :equity_capital, where('account_type_id = 4') do
-    include AccountScopeExtension
-  end
-  scope :expenses, where('account_type_id = 5') do
-    include AccountScopeExtension
-  end
-  scope :earnings, where('account_type_id = 6') do
+  scope :by_type, lambda {|value| includes(:account_type).where('account_types.name' => value)} do
     include AccountScopeExtension
   end
 
