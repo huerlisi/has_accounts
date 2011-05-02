@@ -51,9 +51,10 @@ class Account < ActiveRecord::Base
   
   # Calculations
   def turnover(selector = Date.today, inclusive = true)
+    equality = "=" if inclusive
+
     if selector.is_a? Range or selector.is_a? Array
       if selector.first.is_a? Booking
-        equality = "=" if inclusive
         if selector.first.value_date == selector.last.value_date
           condition = ["date(value_date) = :value_date AND id >#{equality} :first_id AND id <#{equality} :last_id", {
             :value_date => selector.first.value_date,
@@ -82,11 +83,9 @@ class Account < ActiveRecord::Base
       end
     else
       if selector.is_a? Booking
-        equality = "=" if inclusive
         # date(value_date) is needed on sqlite!
         condition = ["(value_date < :value_date) OR (date(value_date) = :value_date AND id <#{equality} :id)", {:value_date => selector.value_date, :id => selector.id}]
       else
-        equality = "=" if inclusive
         condition = ["date(value_date) <#{equality} ?", selector]
       end
     end
