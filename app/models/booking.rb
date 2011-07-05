@@ -1,6 +1,7 @@
 class Booking < ActiveRecord::Base
   # Validation
-  validates_presence_of :debit_account, :credit_account, :title, :amount, :value_date
+  validates_presence_of :debit_account, :credit_account, :title, :value_date
+  validates :amount, :presence => true, :numericality => true
   validates_time :value_date
 
   # Account
