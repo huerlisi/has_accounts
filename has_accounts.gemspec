@@ -7,5 +7,5 @@ Gem::Specification.new do |s|
   s.email = ["simon.huerlimann@cyt.ch"]
   s.description = "HasAccounts is a full featured Rails 3 gem providing models for financial accounting."
   s.files = Dir["{app,lib,config}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]
-  s.version = "0.8.1"
+  s.version = "0.8.2"
 end
