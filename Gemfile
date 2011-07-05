@@ -27,6 +27,10 @@ group :test do
   gem "factory_girl_rails", "~>1.1.rc1"
   gem "factory_girl", "~>2.0.0.rc1"
 
+  # Matchers/Helpers
+  gem 'shoulda'
+  gem 'accept_values_for'
+
   # Database
   gem "sqlite3"
 end
