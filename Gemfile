@@ -31,6 +31,10 @@ group :test do
   gem 'shoulda'
   gem 'accept_values_for'
 
+  # Autotest
+  gem 'autotest'
+  gem 'autotest-rails'
+
   # Database
   gem "sqlite3"
 end

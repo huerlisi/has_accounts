@@ -6,6 +6,7 @@ PATH
 GEM
   remote: http://rubygems.org/
   specs:
+    ZenTest (4.5.0)
     abstract (1.0.0)
     accept_values_for (0.4.3)
       activemodel (>= 3.0.0)
@@ -37,6 +38,10 @@ GEM
       activesupport (= 3.0.9)
     activesupport (3.0.9)
     arel (2.0.10)
+    autotest (4.4.6)
+      ZenTest (>= 4.4.1)
+    autotest-rails (4.1.0)
+      ZenTest
     builder (2.1.2)
     capybara (1.0.0)
       mime-types (>= 1.16)
@@ -125,6 +130,8 @@ PLATFORMS
 
 DEPENDENCIES
   accept_values_for
+  autotest
+  autotest-rails
   capybara
   factory_girl (~> 2.0.0.rc1)
   factory_girl_rails (~> 1.1.rc1)
