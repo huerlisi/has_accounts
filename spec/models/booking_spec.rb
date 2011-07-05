@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe Booking do
   subject { FactoryGirl.build :booking }
   
