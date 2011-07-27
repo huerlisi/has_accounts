@@ -33,7 +33,13 @@ class Booking < ActiveRecord::Base
   default_scope order('value_date, id')
 
   scope :by_value_date, lambda {|value_date| where("date(value_date) = ?", value_date) }
-  scope :by_value_period, lambda {|from, to| where("date(value_date) BETWEEN :from AND :to", :from => from, :to => to) }
+  scope :by_value_period, lambda {|from, to|
+    if from.present?
+      where("date(value_date) BETWEEN :from AND :to", :from => from, :to => to)
+    else
+      where("date(value_date) <= :to", :to => to)
+    end
+  }
   
   scope :by_account, lambda {|account_id|
     { :conditions => ["debit_account_id = :account_id OR credit_account_id = :account_id", {:account_id => account_id}] }
