@@ -53,7 +53,7 @@ class Account < ActiveRecord::Base
   def turnover(selector = Date.today, inclusive = true)
     equality = "=" if inclusive
 
-    if selector.respond_to(:first) and selector.respond_to(:last)
+    if selector.respond_to?(:first) and selector.respond_to?(:last)
       if selector.first.is_a? Booking
         if selector.first.value_date == selector.last.value_date
           condition = ["date(value_date) = :value_date AND id >#{equality} :first_id AND id <#{equality} :last_id", {
