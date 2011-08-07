@@ -7,6 +7,8 @@ class SetupHasAccountsEngine < ActiveRecord::Migration
       t.datetime "updated_at"
     end
 
+    add_index "account_types", "name"
+
     create_table "accounts" do |t|
       t.string   "title",           :limit => 100
       t.integer  "parent_id"
@@ -23,6 +25,7 @@ class SetupHasAccountsEngine < ActiveRecord::Migration
       t.datetime "updated_at"
     end
 
+    add_index "accounts", ["account_type_id"], :name => "index_accounts_on_account_type_id"
     add_index "accounts", ["bank_id"], :name => "index_accounts_on_bank_id"
     add_index "accounts", ["code"], :name => "index_accounts_on_code"
     add_index "accounts", ["holder_id", "holder_type"], :name => "index_accounts_on_holder_id_and_holder_type"
@@ -50,10 +53,14 @@ class SetupHasAccountsEngine < ActiveRecord::Migration
       t.integer  "reference_id"
       t.string   "reference_type"
     end
+
+    add_index "bookings", ["credit_account_id"], :name => "index_bookings_on_credit_account_id"
+    add_index "bookings", ["debit_account_id"], :name => "index_bookings_on_debit_account_id"
+    add_index "bookings", ["reference_id", "reference_type"], :name => "index_bookings_on_reference_id_and_reference_type"
+    add_index "bookings", ["value_date"], :name => "index_bookings_on_value_date"
   end
 
   def self.down
     drop_table :account_types, :accounts, :banks, :bookings
   end
 end
-
