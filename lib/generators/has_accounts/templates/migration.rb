@@ -15,7 +15,7 @@ class SetupHasAccountsEngine < ActiveRecord::Migration
       t.integer  "account_type_id"
       t.integer  "number"
       t.string   "code"
-      t.integer  "type"
+      t.string   "type"
       t.integer  "holder_id"
       t.string   "holder_type"
       t.integer  "bank_id"
