@@ -55,9 +55,9 @@ GEM
     diff-lcs (1.1.2)
     erubis (2.6.6)
       abstract (>= 1.0.0)
-    factory_girl (2.0.0.rc1)
-    factory_girl_rails (1.1.rc1)
-      factory_girl (~> 2.0.0.rc)
+    factory_girl (2.0.2)
+    factory_girl_rails (1.1.0)
+      factory_girl (~> 2.0.0)
       railties (>= 3.0.0)
     ffi (1.0.9)
     has_vcards (0.7.1)
@@ -133,8 +133,7 @@ DEPENDENCIES
   autotest
   autotest-rails
   capybara
-  factory_girl (~> 2.0.0.rc1)
-  factory_girl_rails (~> 1.1.rc1)
+  factory_girl_rails (~> 1.1)
   has_accounts!
   has_vcards
   rails (~> 3.0.9)
