@@ -20,9 +20,10 @@ class SetupHasAccountsEngine < ActiveRecord::Migration
       t.string   "holder_type"
       t.integer  "bank_id"
       t.integer  "esr_id"
-      t.integer  "pc_id"
+      t.string   "pc_id"
       t.datetime "created_at"
       t.datetime "updated_at"
+      t.string   "iban"
     end
 
     add_index "accounts", ["account_type_id"], :name => "index_accounts_on_account_type_id"
@@ -33,6 +34,8 @@ class SetupHasAccountsEngine < ActiveRecord::Migration
 
     create_table "banks" do |t|
       t.integer  "vcard_id"
+      t.string   "swift"
+      t.string   "clearing"
       t.datetime "created_at"
       t.datetime "updated_at"
     end
