@@ -84,6 +84,7 @@ class Booking < ActiveRecord::Base
   # Reference
   belongs_to :reference, :polymorphic => true
   after_save :notify_references
+  after_destroy :notify_references
 
   private
   def notify_references
