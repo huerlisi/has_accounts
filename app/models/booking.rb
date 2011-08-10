@@ -162,8 +162,9 @@ class Booking < ActiveRecord::Base
   end
   
   # Reference
-  belongs_to :reference, :polymorphic => true
+  belongs_to :reference, :polymorphic => true, :touch => true
   after_save :notify_references
+  after_destroy :notify_references
 
   # Safety net for form assignments
   def reference_type=(value)
