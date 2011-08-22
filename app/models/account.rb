@@ -26,6 +26,14 @@ class Account < ActiveRecord::Base
     !is_asset_account?
   end
 
+  def is_balance_account?
+    Account.by_type(['current_assets', 'capital_assets', 'outside_capital', 'equity_capital']).exists?(self)
+  end
+
+  def is_profit_account?
+    !is_balance_account?
+  end
+
   scope :by_type, lambda {|value| includes(:account_type).where('account_types.name' => value)} do
     include AccountScopeExtension
   end
