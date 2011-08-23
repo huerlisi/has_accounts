@@ -29,6 +29,16 @@ class Booking < ActiveRecord::Base
     end
   end
   
+  def balance_account
+    return credit_account if credit_account.is_balance_account?
+    return debit_account if debit_account.is_balance_account?
+  end
+
+  def profit_account
+    return credit_account if credit_account.is_profit_account?
+    return debit_account if debit_account.is_profit_account?
+  end
+
   # Scoping
   default_scope order('value_date, id')
 
