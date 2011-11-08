@@ -1,4 +1,4 @@
-class SetupHasAccountsEngine < ActiveRecord::Migration
+class CreateHasAccountsTables < ActiveRecord::Migration
   def self.up
     create_table "account_types" do |t|
       t.string   "name",       :limit => 100
