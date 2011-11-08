@@ -4,10 +4,6 @@ source :rubygems
 
 gemspec
 
-# Rails
-# =====
-gem 'rails', '~> 3.0.9'
-
 # Development
 # ===========
 group :development do
@@ -37,11 +33,3 @@ group :test do
   # Database
   gem "sqlite3"
 end
-
-# HasAccounts
-# ===========
-# Addresses
-gem 'has_vcards'
-
-# Date/Time handling
-gem 'validates_timeliness'
