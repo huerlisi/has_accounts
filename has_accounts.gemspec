@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
   s.platform     = Gem::Platform::RUBY
 
   # Dependencies
-  s.add_runtime_dependency(%q<rails>, ["~> 3.1.0"])
+  s.add_dependency(%q<rails>, ["~> 3.1.0"])
   s.add_runtime_dependency(%q<has_vcards>)
   s.add_development_dependency(%q<validates_timeliness>)
 end
