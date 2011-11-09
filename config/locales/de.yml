@@ -15,7 +15,10 @@ de:
         saldo:          Saldo
         account_type:   Kontentyp
       bank_account:
-        number:         Kontokorrent Nr.
+        number:         Kontokorrent-Nr.
+        iban:           IBAN
+        pc_id:          VESR-Teilnehmer-Nr.
+        esr_id:         VESR-Identifikations-Nr.
       bank:
         clearing:       Clearing-Nr.
         swift:          SWIFT-Nr.
