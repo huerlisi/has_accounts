@@ -10,10 +10,12 @@ de:
 
     attributes:
       account:
-        code:           Nummer
+        code:           Nr.
         title:          Titel
         saldo:          Saldo
         account_type:   Kontentyp
+      bank_account:
+        number:         Kontokorrent Nr.
       bank:
         clearing:       Clearing-Nr.
         swift:          SWIFT-Nr.
