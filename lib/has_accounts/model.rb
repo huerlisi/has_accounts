@@ -3,7 +3,7 @@ module HasAccounts
     extend ActiveSupport::Concern
     
     included do
-      class_inheritable_accessor :direct_account
+      class_attribute :direct_account
 
       has_many :bookings, :as => :reference, :dependent => :destroy do
         # TODO: duplicated in Booking (without parameter)
