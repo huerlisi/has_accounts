@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
 
   # Dependencies
   s.add_dependency(%q<rails>, ["~> 3.1.0"])
-  s.add_runtime_dependency(%q<has_vcards>)
-  s.add_development_dependency(%q<validates_timeliness>)
+  s.add_dependency(%q<has_vcards>)
+  s.add_dependency(%q<validates_timeliness>)
+  s.add_dependency(%q<inherited_resources>)
 end
