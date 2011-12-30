@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110428205609) do
+ActiveRecord::Schema.define(:version => 20111230223924) do
 
   create_table "account_types", :force => true do |t|
     t.string   "name",       :limit => 100
@@ -19,32 +19,30 @@ ActiveRecord::Schema.define(:version => 20110428205609) do
     t.datetime "updated_at"
   end
 
+  add_index "account_types", ["name"], :name => "index_account_types_on_name"
+
   create_table "accounts", :force => true do |t|
     t.string   "title",           :limit => 100
     t.integer  "parent_id"
     t.integer  "account_type_id"
-    t.integer  "number"
+    t.string   "number"
     t.string   "code"
-    t.integer  "type"
+    t.string   "type"
     t.integer  "holder_id"
     t.string   "holder_type"
     t.integer  "bank_id"
     t.integer  "esr_id"
-    t.integer  "pc_id"
+    t.string   "pc_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "iban"
   end
 
+  add_index "accounts", ["account_type_id"], :name => "index_accounts_on_account_type_id"
   add_index "accounts", ["bank_id"], :name => "index_accounts_on_bank_id"
   add_index "accounts", ["code"], :name => "index_accounts_on_code"
   add_index "accounts", ["holder_id", "holder_type"], :name => "index_accounts_on_holder_id_and_holder_type"
   add_index "accounts", ["type"], :name => "index_accounts_on_type"
-
-  create_table "banks", :force => true do |t|
-    t.integer  "vcard_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "bookings", :force => true do |t|
     t.string   "title",             :limit => 100
@@ -61,12 +59,27 @@ ActiveRecord::Schema.define(:version => 20110428205609) do
     t.datetime "updated_at"
     t.integer  "reference_id"
     t.string   "reference_type"
+    t.integer  "template_id"
+    t.string   "template_type"
   end
+
+  add_index "bookings", ["credit_account_id"], :name => "index_bookings_on_credit_account_id"
+  add_index "bookings", ["debit_account_id"], :name => "index_bookings_on_debit_account_id"
+  add_index "bookings", ["reference_id", "reference_type"], :name => "index_bookings_on_reference_id_and_reference_type"
+  add_index "bookings", ["template_id", "template_type"], :name => "index_bookings_on_template_id_and_template_type"
+  add_index "bookings", ["value_date"], :name => "index_bookings_on_value_date"
 
   create_table "invoices", :force => true do |t|
     t.date     "value_date"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "people", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "swift"
+    t.string   "clearing"
   end
 
 end
