@@ -33,3 +33,6 @@ group :test do
   # Database
   gem "sqlite3"
 end
+
+gem 'validates_timeliness'
+gem 'has_vcards'

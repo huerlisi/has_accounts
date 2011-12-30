@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    has_accounts (0.17.0)
+    has_accounts (0.17.1)
       has_vcards
       inherited_resources
       rails (~> 3.1)
@@ -156,7 +156,9 @@ DEPENDENCIES
   capybara
   factory_girl_rails (~> 1.1)
   has_accounts!
+  has_vcards
   rspec
   rspec-rails
   shoulda
   sqlite3
+  validates_timeliness
