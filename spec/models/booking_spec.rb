@@ -5,6 +5,9 @@ describe Booking do
   
   its(:title) { should == 'Simple Booking' }
   
+  it { should belong_to :debit_account }
+  it { should belong_to :credit_account }
+
   context "validations" do
     it { should accept_values_for(:title, "Test", "Test Account!") }
     it { should_not accept_values_for(:title, "", nil) }
