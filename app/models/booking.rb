@@ -146,14 +146,6 @@ class Booking < ActiveRecord::Base
     end
   end
 
-  # Templates
-  def booking_template_id
-    nil
-  end
-  
-  def booking_template_id=(value)
-  end
-  
   # Helpers
   def split(amount, params = {})
     # Clone
