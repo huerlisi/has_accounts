@@ -172,7 +172,7 @@ class Booking < ActiveRecord::Base
   end
   
   # Reference
-  belongs_to :reference, :polymorphic => true, :touch => true
+  belongs_to :reference, :polymorphic => true, :touch => true, :inverse_of => :bookings
   after_save :notify_references
   after_destroy :notify_references
 
