@@ -1,4 +1,4 @@
-class Bank < ActiveRecord::Base
+class Bank < Person
   has_many :bank_accounts
 
   has_vcards
