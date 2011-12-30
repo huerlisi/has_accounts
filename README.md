@@ -2,6 +2,7 @@ has_accounts
 ============
 
 [![Build Status](https://secure.travis-ci.org/huerlisi/has_accounts.png)](http://travis-ci.org/huerlisi/has_accounts)
+
 Rails plugin providing financal accounting models and helpers.
 
 
