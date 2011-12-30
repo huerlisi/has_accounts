@@ -10,7 +10,7 @@ module HasAccounts
         def direct_balance(value_date = nil, direct_account = nil)
           return BigDecimal.new('0') unless proxy_owner.direct_account
           
-          direct_account ||= proxy_owner.direct_account
+          direct_account ||= proxy_association.owner.direct_account
           balance = BigDecimal.new('0')
 
           # Scope by value_date
