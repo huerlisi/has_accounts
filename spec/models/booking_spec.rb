@@ -7,6 +7,7 @@ describe Booking do
   
   it { should belong_to :debit_account }
   it { should belong_to :credit_account }
+  it { should belong_to :template }
 
   context "validations" do
     it { should accept_values_for(:title, "Test", "Test Account!") }
