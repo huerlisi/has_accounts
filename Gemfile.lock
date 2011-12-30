@@ -157,6 +157,7 @@ DEPENDENCIES
   factory_girl_rails (~> 1.1)
   has_accounts!
   has_vcards
+  inherited_resources
   rspec
   rspec-rails
   shoulda

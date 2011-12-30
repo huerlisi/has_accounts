@@ -35,4 +35,5 @@ group :test do
 end
 
 gem 'validates_timeliness'
+gem 'inherited_resources'
 gem 'has_vcards'
