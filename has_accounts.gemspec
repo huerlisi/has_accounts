@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
     "README.md"
   ]
 
-  s.files        = `git ls-files app lib config`.split("\n")
+  s.files        = `git ls-files app lib config db`.split("\n")
 
   s.platform     = Gem::Platform::RUBY
 
