@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    has_accounts (0.17.1)
+    has_accounts (0.17.4)
       has_vcards
       inherited_resources
       rails (~> 3.1)
