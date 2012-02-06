@@ -1,0 +1,62 @@
+# English locale
+en:
+  activerecord:
+    models:
+      account:          Account
+      bank_account:     Bank account
+      bank:             Bank
+      account_type:     Account type
+      booking:          Booking
+
+    attributes:
+      account:
+        code:           No.
+        title:          Title
+        saldo:          Saldo
+        account_type:   Acocunt type
+      bank_account:
+        number:         Account no.
+        iban:           IBAN
+        pc_id:          VESR no.
+        esr_id:         VESR identifier
+      bank:
+        clearing:       Clearing no.
+        swift:          SWIFT no.
+      account_type:
+        name:           Name
+        title:          Title
+      booking:
+        code:           Booking no.
+        value_date:     Value date
+        title:          Title
+        amount:         Amount
+        comments:       Remarks
+        credit_account: Credit
+        debit_account:  Debit
+        reference:      Reference
+        reference_type: Reference type
+        reference_id:   Reference ID
+        text:           Text
+        date:           Date
+        balance:        Saldo
+        edit:           Edit
+        destroy:        Delete
+        valuta:         Valuta
+        value:          Amount
+
+  # Title customizations
+  account:
+    index:
+      title:            Accounts
+  bank_account:
+    index:
+      title:            Bank Accounts
+  bank:
+    index:
+      title:            Banks
+  account_type:
+    index:
+      title:            Account Types
+  booking:
+    index:
+      title:            Booking Journal
