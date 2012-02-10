@@ -11,6 +11,20 @@ class Booking < ActiveRecord::Base
   belongs_to :debit_account, :foreign_key => 'debit_account_id', :class_name => "Account"
   belongs_to :credit_account, :foreign_key => 'credit_account_id', :class_name => "Account"
 
+  def debit_account_code
+    debit_account.code
+  end
+  def debit_account_code=(value)
+    debit_account = Account.find_by_code(value)
+  end
+
+  def credit_account_code
+    credit_account.code
+  end
+  def credit_account_code=(value)
+    credit_account = Account.find_by_code(value)
+  end
+
   def direct_account
     return nil unless reference
     
