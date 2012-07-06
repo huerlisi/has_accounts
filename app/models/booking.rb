@@ -187,7 +187,7 @@ class Booking < ActiveRecord::Base
   def touch_previous_reference
     # TODO: support reference_type for polymorphic changes
     reference_id_changes = changes[:reference_id]
-    if previous_reference_id = reference_id_changes[0]
+    if reference_id_changes && (previous_reference_id = reference_id_changes[0])
       previous_reference = reference_type.constantize.find(previous_reference_id)
       previous_reference.touch if previous_reference != reference
     end
