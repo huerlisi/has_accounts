@@ -182,6 +182,17 @@ class Booking < ActiveRecord::Base
   
   # Reference
   belongs_to :reference, :polymorphic => true, :touch => true, :inverse_of => :bookings
+
+  after_save :touch_previous_reference
+  def touch_previous_reference
+    # TODO: support reference_type for polymorphic changes
+    reference_id_changes = changes[:reference_id]
+    if previous_reference_id = reference_id_changes[0]
+      previous_reference = reference_type.constantize.find(previous_reference_id)
+      previous_reference.touch if previous_reference != reference
+    end
+  end
+
   after_save :notify_references
   after_destroy :notify_references
 
