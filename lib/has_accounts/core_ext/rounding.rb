@@ -22,7 +22,7 @@ module HasAccounts #:nodoc:
           if self.nil?
             return BigDecimal.new("0")
           else
-            return (self * 20).round / 20
+            return (self * 20).round / BigDecimal("20")
           end
         end
       end
