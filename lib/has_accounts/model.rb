@@ -32,34 +32,29 @@ module HasAccounts
       end
     end
 
-    module ClassMethods
+    # Delegate to class
+    def direct_account
+      self.class.direct_account
     end
-    
-    module InstanceMethods
-      # Delegate to class
-      def direct_account
-        self.class.direct_account
-      end
 
-      # Build booking
-      def build_booking(params = {}, template_code = nil)
-        template_code ||= self.class.to_s.underscore + ':invoice'
-        booking_template = BookingTemplate.find_by_code(template_code)
-        
-        # Prepare booking parameters
-        booking_params = {:reference => self}
-        booking_params.merge!(params)
+    # Build booking
+    def build_booking(params = {}, template_code = nil)
+      template_code ||= self.class.to_s.underscore + ':invoice'
+      booking_template = BookingTemplate.find_by_code(template_code)
 
-        # Build and assign booking
-        booking = booking_template.build_booking(booking_params)
-        bookings << booking
-        
-        booking
-      end
+      # Prepare booking parameters
+      booking_params = {:reference => self}
+      booking_params.merge!(params)
 
-      def balance(value_date = nil, direct_account = nil)
-        bookings.direct_balance(value_date, direct_account)
-      end
+      # Build and assign booking
+      booking = booking_template.build_booking(booking_params)
+      bookings << booking
+
+      booking
+    end
+
+    def balance(value_date = nil, direct_account = nil)
+      bookings.direct_balance(value_date, direct_account)
     end
   end
 end
