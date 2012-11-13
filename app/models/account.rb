@@ -1,4 +1,7 @@
 class Account < ActiveRecord::Base
+  # Access restrictions
+  attr_accessible :title, :code, :account_type_id
+
   # Scopes
   default_scope :order => 'code'
   
