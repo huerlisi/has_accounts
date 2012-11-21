@@ -5,7 +5,7 @@ module HasAccounts
     included do
       class_attribute :direct_account
 
-      has_many :bookings, :as => :reference, :dependent => :destroy, :inverse_of => :reference do
+      has_many :bookings, :as => :reference, :dependent => :nullify, :inverse_of => :reference do
         # TODO: duplicated in Booking (without parameter)
         def direct_balance(value_date = nil, direct_account = nil)
           return BigDecimal.new('0') unless proxy_association.owner.direct_account
