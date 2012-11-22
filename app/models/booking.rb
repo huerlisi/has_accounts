@@ -1,6 +1,6 @@
 class Booking < ActiveRecord::Base
   # Access restrictions
-  attr_accessible :title, :comments, :amount, :debit_account, :credit_account, :value_date
+  attr_accessible :title, :comments, :amount, :value_date
 
   # Validation
   validates_presence_of :debit_account, :credit_account, :title, :value_date
@@ -12,7 +12,9 @@ class Booking < ActiveRecord::Base
 
   # Account
   belongs_to :debit_account, :foreign_key => 'debit_account_id', :class_name => "Account"
+  attr_accessible :debit_account, :debit_account_id
   belongs_to :credit_account, :foreign_key => 'credit_account_id', :class_name => "Account"
+  attr_accessible :credit_account, :credit_account_id
 
   def debit_account_code
     debit_account.code
