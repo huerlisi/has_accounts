@@ -1,6 +1,6 @@
 class Booking < ActiveRecord::Base
   # Access restrictions
-  attr_accessible :title, :comments, :amount, :value_date
+  attr_accessible :title, :comments, :amount, :value_date, :code
 
   # Validation
   validates_presence_of :debit_account, :credit_account, :title, :value_date
@@ -32,10 +32,10 @@ class Booking < ActiveRecord::Base
 
   def direct_account
     return nil unless reference
-    
+
     return reference.direct_account if reference.respond_to? :direct_account
   end
-  
+
   def contra_account(account = nil)
     # Derive from direct_account if available
     account ||= direct_account
@@ -50,7 +50,7 @@ class Booking < ActiveRecord::Base
       return nil
     end
   end
-  
+
   def balance_account
     return credit_account if credit_account.is_balance_account?
     return debit_account if debit_account.is_balance_account?
@@ -72,7 +72,7 @@ class Booking < ActiveRecord::Base
       where("date(value_date) <= :to", :to => to)
     end
   }
-  
+
   scope :by_account, lambda {|account_id|
     { :conditions => ["debit_account_id = :account_id OR credit_account_id = :account_id", {:account_id => account_id}] }
   } do
@@ -80,7 +80,7 @@ class Booking < ActiveRecord::Base
     def titles
       find(:all, :group => :title).map{|booking| booking.title}
     end
-    
+
     # Statistics per booking title.
     #
     # The statistics are an array of hashes with keys title, count, sum, average.
@@ -91,21 +91,21 @@ class Booking < ActiveRecord::Base
 
   scope :by_text, lambda {|value|
     text   = '%' + value + '%'
-    
+
     amount = value.delete("'").to_f
     if amount == 0.0
       amount = nil unless value.match(/^[0.]*$/)
     end
-    
+
     date   = nil
     begin
       date = Date.parse(value)
     rescue ArgumentError
     end
-    
+
     where("title LIKE :text OR comments LIKE :text OR amount = :amount OR value_date = :value_date", :text => text, :amount => amount, :value_date => date)
   }
-  
+
   # Returns array of all years we have bookings for
   def self.fiscal_years
     with_exclusive_scope do
@@ -155,11 +155,11 @@ class Booking < ActiveRecord::Base
   def amount_as_string
     '%0.2f' % amount
   end
-  
+
   def amount_as_string=(value)
     self.amount = value
   end
-  
+
   def rounded_amount
     if amount.nil?
     	return 0
@@ -176,17 +176,18 @@ class Booking < ActiveRecord::Base
     # Set amount
     new_booking[:amount] = amount
     self.amount -= amount
-    
+
     # Update attributes
     params.each{|key, value|
       new_booking[key] = value
     }
-    
+
     [self, new_booking]
   end
-  
+
   # Reference
   belongs_to :reference, :polymorphic => true, :touch => true, :inverse_of => :bookings
+  attr_accessible :reference_id, :reference_type
 
   after_save :touch_previous_reference
   def touch_previous_reference
@@ -220,7 +221,7 @@ class Booking < ActiveRecord::Base
       balance
     end
   end
-  
+
   private
   def notify_references
     return unless reference and reference.respond_to?(:booking_saved)
