@@ -60,3 +60,6 @@ en:
   booking:
     index:
       title:            Booking Journal
+  crud:
+    action:
+      copy:             Kopieren

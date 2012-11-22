@@ -60,3 +60,6 @@ de:
   booking:
     index:
       title:            Buchungsjournal
+  crud:
+    action:
+      copy:             Kopieren
