@@ -24,6 +24,7 @@ Rails.application.routes.draw do
     resources :attachments
   end
 
+  resources :banks
   resources :bank_accounts do
     member do
       get :csv_bookings
