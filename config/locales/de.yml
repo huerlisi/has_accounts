@@ -45,21 +45,24 @@ de:
         value:          Betrag
 
   # Title customizations
-  account:
+  accounts:
     index:
-      title:            Konti
-  bank_account:
+      title:            Kontenplan
+  bank_accounts:
     index:
       title:            Bankkonti
-  bank:
+  banks:
     index:
       title:            Banken
-  account_type:
+  account_types:
     index:
       title:            Kontentypen
-  booking:
+  bookings:
     index:
       title:            Buchungsjournal
+    copy:
+      title:            Buchung kopieren
+
   crud:
     action:
       copy:             Kopieren
