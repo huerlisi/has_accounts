@@ -187,7 +187,7 @@ class Booking < ActiveRecord::Base
 
   # Reference
   belongs_to :reference, :polymorphic => true, :touch => true, :inverse_of => :bookings
-  attr_accessible :reference_id, :reference_type
+  attr_accessible :reference_id, :reference_type, :reference
 
   after_save :touch_previous_reference
   def touch_previous_reference
