@@ -48,6 +48,15 @@ de:
   accounts:
     index:
       title:            Kontenplan
+    edit_bookings:
+      title: Buchungen
+    info:
+      title: Kontodaten
+    journal:
+      title: Auszug
+  attachments:
+    list:
+      title: Dokumente
   bank_accounts:
     index:
       title:            Bankkonti
@@ -66,3 +75,5 @@ de:
   crud:
     action:
       copy:             Kopieren
+      only_credit_bookings: "Nur Soll"
+      only_debit_bookings: "Nur Haben"
