@@ -44,6 +44,10 @@ de:
         valuta:         Valuta
         value:          Betrag
 
+  form:
+    bank:
+      money_transfer: Bankverbindung
+
   # Title customizations
   accounts:
     index:
