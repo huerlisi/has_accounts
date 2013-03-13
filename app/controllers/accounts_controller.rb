@@ -3,6 +3,8 @@ class AccountsController < AuthorizedController
   has_scope :by_value_period, :using => [:from, :to], :default => proc { |c| c.session[:has_scope] }
   has_scope :by_text
 
+  has_scope :page, :only => :index
+
   def index
     @accounts = apply_scopes(Account).includes(:account_type).includes(:credit_bookings, :credit_bookings)
   end
@@ -10,6 +12,7 @@ class AccountsController < AuthorizedController
   def show
     @account = Account.find(params[:id])
     @bookings = apply_scopes(Booking).includes(:debit_account => :account_type, :credit_account => :account_type).by_account(@account)
+    @bookings = @bookings.page(params[:page]) || 1
 
     if params[:only_credit_bookings]
       @bookings = @bookings.where(:credit_account_id => @account.id)
