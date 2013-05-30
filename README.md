@@ -13,6 +13,40 @@ In Rails 3 simply add
 
     gem 'has_accounts'
 
+Integration
+===========
+
+Generate and run migrations
+
+    rake has_accounts:install:migrations
+    rake db:migrate
+
+Seed basic account data
+
+    AccountType.create!([
+      {:name => "current_assets", :title => "Umlaufvermögen"},
+      {:name => "capital_assets", :title => "Anlagevermögen"},
+      {:name => "outside_capital", :title => "Fremdkapital"},
+      {:name => "equity_capital", :title => "Eigenkapital"},
+      {:name => "costs", :title => "Aufwand"},
+      {:name => "earnings", :title => "Ertrag"},
+    ])
+
+Add specific seed depending on the needs of your project, e.g.:
+
+    current_assets = AccountType.find_by_name('current_assets')
+    capital_assets = AccountType.find_by_name('capital_assets')
+    earnings = AccountType.find_by_name('earnings')
+    costs = AccountType.find_by_name('costs')
+    
+    Account.create!([
+      {:code => "1000", :title => "Kasse", :account_type => current_assets},
+      {:code => "1100", :title => "Debitoren", :account_type => current_assets},
+      {:code => "3200", :title => "Dienstleistungsertrag", :account_type => earnings},
+      {:code => "3900", :title => "Debitorenverlust", :account_type => costs},
+      {:code => "8000", :title => "Ausserordentlicher Ertrag", :account_type => earnings}
+    ])
+
 
 Example
 =======
