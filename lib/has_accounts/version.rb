@@ -1,3 +1,3 @@
 module HasAccounts
-  VERSION = "0.20.1"
+  VERSION = "1.0.0"
 end
