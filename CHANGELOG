@@ -1,3 +1,8 @@
+1.0.0
+=====
+Split gem into two parts: has_accounts now only provides the models and migrations. The new
+has_accounts_engine gem brings all the controller, views etc.
+
 0.20.0
 ======
 * Add account_type to Account.attr_accessible.
