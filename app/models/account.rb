@@ -46,6 +46,12 @@ class Account < ActiveRecord::Base
   # =======
   acts_as_taggable
   attr_accessible :tag_list
+  def self.default_tags
+    ['invoice:debit', 'invoice:earnings', 'invoice:credit', 'invoice:costs']
+  end
+  def self.tag_collection
+    (default_tags + Account.tag_counts.pluck(:name)).uniq
+  end
 
   # Holder
   # ======
