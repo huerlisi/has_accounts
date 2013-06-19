@@ -1,3 +1,7 @@
+1.0.1
+=====
+Add tag support for accounts.
+
 1.0.0
 =====
 Split gem into two parts: has_accounts now only provides the models and migrations. The new
