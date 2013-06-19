@@ -28,6 +28,7 @@ Gem::Specification.new do |s|
   # Dependencies
   s.add_dependency(%q<rails>, ["~> 3.1"])
   s.add_dependency(%q<has_vcards>)
+  s.add_dependency(%q<acts-as-taggable-on>)
   s.add_dependency(%q<validates_timeliness>)
   s.add_dependency(%q<inherited_resources>)
 end

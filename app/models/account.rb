@@ -42,6 +42,11 @@ class Account < ActiveRecord::Base
     include AccountScopeExtension
   end
 
+  # Tagging
+  # =======
+  acts_as_taggable
+  attr_accessible :tag_list
+
   # Holder
   # ======
   belongs_to :holder, :polymorphic => true
