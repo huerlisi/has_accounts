@@ -1,7 +1,5 @@
 # Settings
 # ========
-source :rubygems
-
 gemspec
 
 # Development
