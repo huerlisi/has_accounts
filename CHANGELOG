@@ -1,3 +1,10 @@
+1.1.0
+=====
+* Drop deprecated source :rubygems in Gemfile.
+* Update Gemfile.lock.
+* Add BookingTemplate model and migration.
+* Add migration to create BookingTemplate table.
+
 1.0.2
 =====
 Add support for default tag list for Accounts.
