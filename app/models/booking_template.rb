@@ -6,7 +6,7 @@ class BookingTemplate < ActiveRecord::Base
   belongs_to :debit_account, :foreign_key => 'debit_account_id', :class_name => "Account"
   attr_accessible :debit_account_id
   belongs_to :credit_account, :foreign_key => 'credit_account_id', :class_name => "Account"
-  attr_accessible :debit_account_id
+  attr_accessible :credit_account_id
 
   # Default ordering
   default_scope order(:code)
