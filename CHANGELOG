@@ -1,3 +1,7 @@
+1.1.1
+=====
+* Fix attr_accessible for BookingTemplate.
+
 1.1.0
 =====
 * Drop deprecated source :rubygems in Gemfile.
