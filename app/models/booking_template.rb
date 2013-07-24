@@ -4,9 +4,9 @@ class BookingTemplate < ActiveRecord::Base
 
   # Associations
   belongs_to :debit_account, :foreign_key => 'debit_account_id', :class_name => "Account"
-  attr_accessible :debit_account_id
+  attr_accessible :debit_account_id, :debit_account
   belongs_to :credit_account, :foreign_key => 'credit_account_id', :class_name => "Account"
-  attr_accessible :credit_account_id
+  attr_accessible :credit_account_id, :credit_account
 
   # Default ordering
   default_scope order(:code)
