@@ -1,6 +1,7 @@
 1.1.2 (unreleased)
 =====
 Fix specs.
+Add #debit_account and #credit_account to attr_accessible for BookingTemplate.
 
 1.1.1
 =====
