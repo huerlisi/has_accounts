@@ -152,6 +152,9 @@ class BookingTemplate < ActiveRecord::Base
   acts_as_taggable_on :include_in_saldo
 
   # Importer
+  # ========
+  attr_accessible :matcher
+
   def self.import(struct)
     templates = self.all.inject([]) do |found, template|
       puts "matcher: " + template.matcher
