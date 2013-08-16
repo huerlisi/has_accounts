@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe Booking do
   subject { FactoryGirl.build :booking }
-  
+
   its(:title) { should == 'Simple Booking' }
-  
+
   it { should belong_to :debit_account }
   it { should belong_to :credit_account }
   it { should belong_to :template }
