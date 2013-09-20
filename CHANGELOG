@@ -1,3 +1,8 @@
+1.1.4 (unreleased)
+=====
+* Fix typo in en locale.
+* Make acts_as_taggable support optional for Account model.
+
 1.1.3
 =====
 * Mark BookingTemplate.matcher as accessible.
