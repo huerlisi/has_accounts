@@ -13,7 +13,7 @@ en:
         code:           No.
         title:          Title
         saldo:          Saldo
-        account_type:   Acocunt type
+        account_type:   Account type
       bank_account:
         number:         Account no.
         iban:           IBAN
