@@ -1,5 +1,10 @@
 require 'has_accounts'
+#
+# Rails
 require 'rails'
+
+# Date/Time handling
+require 'validates_timeliness'
 
 module HasAccounts
   class Railtie < Rails::Engine
