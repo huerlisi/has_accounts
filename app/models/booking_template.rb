@@ -47,8 +47,10 @@ class BookingTemplate < ActiveRecord::Base
 
   # Tagging
   # =======
-  acts_as_taggable
-  attr_accessible :tag_list
+  if defined? ActsAsTaggable
+    acts_as_taggable
+    attr_accessible :tag_list
+  end
 
   def booking_parameters(params = {})
     params = HashWithIndifferentAccess.new(params)
@@ -149,7 +151,9 @@ class BookingTemplate < ActiveRecord::Base
   end
 
   # Tagging
-  acts_as_taggable_on :include_in_saldo
+  if defined? ActsAsTaggable
+    acts_as_taggable_on :include_in_saldo
+  end
 
   # Importer
   # ========
