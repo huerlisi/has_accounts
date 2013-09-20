@@ -26,9 +26,6 @@ Gem::Specification.new do |s|
   s.platform     = Gem::Platform::RUBY
 
   # Dependencies
-  s.add_dependency(%q<rails>, ["~> 3.1"])
-  s.add_dependency(%q<has_vcards>)
-  s.add_dependency(%q<acts-as-taggable-on>)
-  s.add_dependency(%q<validates_timeliness>)
-  s.add_dependency(%q<inherited_resources>)
+  s.add_runtime_dependency(%q<rails>, ["~> 3.1"])
+  s.add_runtime_dependency(%q<validates_timeliness>)
 end
