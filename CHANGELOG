@@ -1,5 +1,16 @@
-1.1.4 (unreleased)
+2.0.0 (unreleased)
 =====
+This is a major release with some breaking changes.
+
+REMOVED
+* Drop Bank and BankAccount models
+
+These models were depending on the Person model from has_vards. This
+is too heavy a dependency.
+
+Reimplement in you application. Take a look at version 1.1.3
+
+FIXES
 * Fix typo in en locale.
 * Make acts_as_taggable support optional for Account model.
 
