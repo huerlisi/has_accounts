@@ -22,21 +22,29 @@ class Account < ActiveRecord::Base
   attr_accessible :title, :code, :account_type_id, :account_type
   validates_presence_of :account_type
 
-  def is_asset_account?
+  def asset_account?
     Account.by_type(['current_assets', 'capital_assets', 'costs']).exists?(self)
   end
+  # Deprecated
+  alias_method :is_asset_account?, :asset_account?
 
-  def is_liability_account?
-    !is_asset_account?
+  def liability_account?
+    !asset_account?
   end
+  # Deprecated
+  alias_method :is_liability_account?, :liability_account?
 
-  def is_balance_account?
+  def balance_account?
     Account.by_type(['current_assets', 'capital_assets', 'outside_capital', 'equity_capital']).exists?(self)
   end
+  # Deprecated
+  alias_method :is_balance_account?, :balance_account?
 
-  def is_profit_account?
-    !is_balance_account?
+  def profit_account?
+    !balance_account?
   end
+  # Deprecated
+  alias_method :is_profit_account?, :profit_account?
 
   scope :by_type, lambda {|value| includes(:account_type).where('account_types.name' => value)} do
     include AccountScopeExtension
