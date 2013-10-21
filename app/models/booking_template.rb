@@ -47,7 +47,7 @@ class BookingTemplate < ActiveRecord::Base
 
   # Tagging
   # =======
-  if defined? ActsAsTaggable
+  if defined? ActsAsTaggableOn
     acts_as_taggable
     attr_accessible :tag_list
   end
@@ -151,7 +151,7 @@ class BookingTemplate < ActiveRecord::Base
   end
 
   # Tagging
-  if defined? ActsAsTaggable
+  if defined? ActsAsTaggableOn
     acts_as_taggable_on :include_in_saldo
   end
 

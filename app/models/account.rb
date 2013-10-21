@@ -52,7 +52,7 @@ class Account < ActiveRecord::Base
 
   # Tagging
   # =======
-  if defined? ActsAsTaggable
+  if defined? ActsAsTaggableOn
     acts_as_taggable
     attr_accessible :tag_list
 
