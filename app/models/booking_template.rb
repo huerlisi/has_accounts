@@ -95,6 +95,7 @@ class BookingTemplate < ActiveRecord::Base
   end
 
   # Factory methods
+  # ===============
   def build_booking(params = {})
     Booking.new(booking_parameters(params))
   end
@@ -103,8 +104,18 @@ class BookingTemplate < ActiveRecord::Base
     Booking.create(booking_parameters(params))
   end
 
+  # Build booking for template
+  #
+  # Raises an exception if template for given [code] cannot be found.
+  #
+  # @param code [String] to lookup template
+  # @param params [Hash] parameters to set on the Booking
+  # @return [Booking] unsaved Booking
   def self.build_booking(code, params = {})
-    find_by_code(code).try(:build_booking, params)
+    template = find_by_code(code)
+    raise "BookingTemplate not found for '#{code}'" unless template
+
+    template.build_booking params
   end
 
   def self.create_booking(code, params = {})
