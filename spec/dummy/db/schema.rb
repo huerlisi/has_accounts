@@ -64,7 +64,7 @@ ActiveRecord::Schema.define(:version => 20131021123821) do
 
   create_table "bookings", :force => true do |t|
     t.string   "title",             :limit => 100
-    t.decimal  "amount",                            :precision => 10, :scale => 0
+    t.decimal  "amount",                            :precision => 10, :scale => 2
     t.integer  "credit_account_id"
     t.integer  "debit_account_id"
     t.date     "value_date"
