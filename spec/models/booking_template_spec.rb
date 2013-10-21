@@ -8,9 +8,11 @@ describe BookingTemplate do
       end
 
       it 'should call build_booking on the matching template' do
-        expect {Booking_template}.to receive(:
-        FactoryGirl.create(:booking_template)
-        expect {BookingTemplate.build_booking(booking_template.code)}
+        template = stub_model(BookingTemplate)
+        allow(BookingTemplate).to receive(:find_by_code).with('code').and_return(template)
+        expect(template).to receive(:build_booking).with({:test => 55})
+        BookingTemplate.build_booking 'code', {:test => 55}
+
       end
     end
   end
