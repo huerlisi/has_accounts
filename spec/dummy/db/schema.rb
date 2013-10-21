@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131021094059) do
+ActiveRecord::Schema.define(:version => 20131021123821) do
 
   create_table "account_types", :force => true do |t|
     t.string   "name",       :limit => 100
@@ -64,15 +64,15 @@ ActiveRecord::Schema.define(:version => 20131021094059) do
 
   create_table "bookings", :force => true do |t|
     t.string   "title",             :limit => 100
-    t.decimal  "amount"
+    t.decimal  "amount",                            :precision => 10, :scale => 0
     t.integer  "credit_account_id"
     t.integer  "debit_account_id"
     t.date     "value_date"
-    t.text     "comments",          :limit => 1000, :default => ""
+    t.text     "comments",          :limit => 1000,                                :default => ""
     t.string   "scan"
-    t.string   "debit_currency",                    :default => "CHF"
-    t.string   "credit_currency",                   :default => "CHF"
-    t.float    "exchange_rate",                     :default => 1.0
+    t.string   "debit_currency",                                                   :default => "CHF"
+    t.string   "credit_currency",                                                  :default => "CHF"
+    t.float    "exchange_rate",                                                    :default => 1.0
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "reference_id"
