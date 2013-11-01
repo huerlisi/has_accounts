@@ -38,19 +38,55 @@ describe Booking do
     let!(:account) { FactoryGirl.create(:account) }
     let!(:cash_account) { FactoryGirl.create(:cash_account) }
 
-    it "should find bookings with account as debit_account" do
+    it "should include bookings with account as debit account" do
       booking = FactoryGirl.create(:booking, :debit_account => account, :credit_account => cash_account)
       Booking.by_account(account.id).should include(booking)
     end
 
-    it "should find bookings with account as credit_account" do
+    it "should include bookings with account as credit account" do
       booking = FactoryGirl.create(:booking, :credit_account => account, :debit_account => cash_account)
       Booking.by_account(account.id).should include(booking)
     end
 
-    it "should not find bookings not connected to account" do
+    it "should include bookings with account as credit and debit account" do
+      booking = FactoryGirl.create(:booking, :credit_account => account, :debit_account => cash_account)
+      Booking.by_account(account.id).should include(booking)
+    end
+
+    it "should not include bookings not connected to account" do
       booking = FactoryGirl.create(:booking, :credit_account => cash_account, :debit_account => cash_account)
       Booking.by_account(account.id).should_not include(booking)
+    end
+  end
+
+  context ".accounted_by" do
+    let(:cash_account) { FactoryGirl.create(:cash_account) }
+    let(:debit_account) { FactoryGirl.create(:debit_account) }
+
+    context "when accounted by debit_account" do
+      it "should use original amount for payment booking" do
+        booking = FactoryGirl.create(:invoice_booking)
+        Booking.accounted_by(debit_account.id).count.should == 1
+        Booking.accounted_by(debit_account.id).first.amount.should == booking.amount
+      end
+
+      it "should use negated amount for payment booking" do
+        booking = FactoryGirl.create(:payment_booking)
+        Booking.accounted_by(debit_account.id).count.should == 1
+        Booking.accounted_by(debit_account.id).first.amount.should == -booking.amount
+      end
+
+      it "should use 0 as amount for booking having debit account as both debit and credit" do
+        booking = FactoryGirl.create(:booking, :debit_account => debit_account, :credit_account => debit_account)
+        Booking.accounted_by(debit_account.id).count.should == 1
+        Booking.accounted_by(debit_account.id).first.amount.should == 0
+      end
+
+      it "should use 0 as amount for booking having debit account as neither debit and credit" do
+        booking = FactoryGirl.create(:booking, :credit_account => cash_account, :debit_account => cash_account)
+        Booking.accounted_by(debit_account.id).count.should == 1
+        Booking.accounted_by(debit_account.id).first.amount.should == 0
+      end
     end
   end
 end

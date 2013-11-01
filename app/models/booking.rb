@@ -92,6 +92,11 @@ class Booking < ActiveRecord::Base
     end
   end
 
+  # Scope where booking amounts are signed according to debit or credit side
+  scope :accounted_by, lambda {|account_id|
+    select("bookings.*, CASE WHEN credit_account_id = debit_account_id THEN 0.0 WHEN credit_account_id = #{account_id} THEN -bookings.amount ELSE bookings.amount END AS amount")
+  }
+
   scope :by_text, lambda {|value|
     text   = '%' + value + '%'
 
