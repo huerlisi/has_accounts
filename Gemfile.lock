@@ -63,6 +63,8 @@ GEM
       treetop (~> 1.4.8)
     mime-types (1.25)
     multi_json (1.8.2)
+    mysql2 (0.3.13)
+    pg (0.17.0)
     polyglot (0.3.3)
     rack (1.4.5)
     rack-cache (1.2)
@@ -139,6 +141,8 @@ DEPENDENCIES
   acts-as-taggable-on
   factory_girl_rails (~> 1.1)
   has_vcards
+  mysql2
+  pg
   rails (~> 3.2)
   rspec
   rspec-rails

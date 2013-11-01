@@ -25,6 +25,8 @@ group :test do
 
   # Database
   gem "sqlite3"
+  gem "mysql2"
+  gem "pg"
 end
 
 gem 'validates_timeliness'
