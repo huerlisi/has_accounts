@@ -16,9 +16,6 @@ group :test do
   gem "rspec"
   gem "rspec-rails"
 
-  # Browser
-  gem "capybara"
-
   # Fixtures
   gem "factory_girl_rails", "~>1.1"
 
@@ -31,11 +28,6 @@ group :test do
 end
 
 gem 'validates_timeliness'
-gem 'inherited_resources'
-gem 'has_scope'
-gem 'cancan'
 gem 'has_vcards'
-gem 'simple_form'
-gem 'i18n_rails_helpers'
 # Tagging
 gem 'acts-as-taggable-on'
