@@ -10,8 +10,8 @@ env:
   - DB=postgresql
 
 before_script:
-  - cd spec/dummy; bundle exec rake db:setup
-  - cd spec/dummy; bundle rake db:test:prepare
+  - cd spec/dummy; bundle exec rake db:setup; cd ../..
+  - cd spec/dummy; bundle rake db:test:prepare; cd ../..
 
 bundler_args: "--binstubs --without development"
 
