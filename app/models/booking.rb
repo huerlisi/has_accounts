@@ -73,8 +73,11 @@ class Booking < ActiveRecord::Base
     end
   }
 
+  # Scope for all accounts assigned to account
+  #
+  # @param [Integer] account_id
   scope :by_account, lambda {|account_id|
-    { :conditions => ["debit_account_id = :account_id OR credit_account_id = :account_id", {:account_id => account_id}] }
+    where("debit_account_id = :account_id OR credit_account_id = :account_id", :account_id => account_id)
   } do
     # Returns array of all booking titles.
     def titles

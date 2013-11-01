@@ -33,4 +33,24 @@ describe Booking do
       Booking.by_value_date(date).should include booking
     end
   end
+
+  context ".by_account" do
+    let!(:account) { FactoryGirl.create(:account) }
+    let!(:cash_account) { FactoryGirl.create(:cash_account) }
+
+    it "should find bookings with account as debit_account" do
+      booking = FactoryGirl.create(:booking, :debit_account => account, :credit_account => cash_account)
+      Booking.by_account(account.id).should include(booking)
+    end
+
+    it "should find bookings with account as credit_account" do
+      booking = FactoryGirl.create(:booking, :credit_account => account, :debit_account => cash_account)
+      Booking.by_account(account.id).should include(booking)
+    end
+
+    it "should not find bookings not connected to account" do
+      booking = FactoryGirl.create(:booking, :credit_account => cash_account, :debit_account => cash_account)
+      Booking.by_account(account.id).should_not include(booking)
+    end
+  end
 end
