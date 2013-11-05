@@ -16,6 +16,11 @@ class Account < ActiveRecord::Base
     "%s (%s)" % [title, code]
   end
 
+  # Parent Account
+  # ==============
+  belongs_to :parent, :class_name => Account
+  attr_accessible :parent, :parent_id
+
   # Account Type
   # ============
   belongs_to :account_type

@@ -1,3 +1,11 @@
+# This is to allow testing on different DB systems by setting
+# the DB environment variable.
+#
+# MySQL and Postgresql username and password are set to
+# match expecations on Travis-CI to simplify automatic testing.
+#
+# Development is expected to be on sqlite3
+
 sqlite: &sqlite
   adapter: sqlite3
   database: db/test.sqlite3
@@ -19,3 +27,6 @@ test:
   timeout: 5000
   host: localhost
   <<: *<%= ENV['DB'] || 'sqlite' %>
+
+development:
+  <<: *sqlite
