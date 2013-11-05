@@ -92,10 +92,20 @@ class Booking < ActiveRecord::Base
     end
   end
 
+  # Accounted bookings
+  # ==================
+  SELECT_ACCOUNTED_AMOUNT=
+    'CASE WHEN credit_account_id = debit_account_id THEN 0.0 WHEN credit_account_id = %s THEN -bookings.amount ELSE bookings.amount END'
+
   # Scope where booking amounts are signed according to debit or credit side
   scope :accounted_by, lambda {|account_id|
-    select("bookings.*, CASE WHEN credit_account_id = debit_account_id THEN 0.0 WHEN credit_account_id = #{account_id} THEN -bookings.amount ELSE bookings.amount END AS amount")
+    select("bookings.*, #{SELECT_ACCOUNTED_AMOUNT % account_id} AS amount")
   }
+
+  #
+  def self.balance_by(account_id)
+    sum(SELECT_ACCOUNTED_AMOUNT % account_id)
+  end
 
   scope :by_text, lambda {|value|
     text   = '%' + value + '%'

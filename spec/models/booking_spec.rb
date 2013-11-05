@@ -89,4 +89,29 @@ describe Booking do
       end
     end
   end
+
+  context ".balance_by" do
+    let(:cash_account) { FactoryGirl.create(:cash_account) }
+    let(:debit_account) { FactoryGirl.create(:debit_account) }
+
+    context "when accounted by debit_account" do
+      it "allows summing over the amount" do
+        FactoryGirl.create(:invoice_booking, :amount => 10, :value_date => '2013-10-10')
+        FactoryGirl.create(:payment_booking, :amount => 9, :value_date => '2013-10-11')
+        FactoryGirl.create(:invoice_booking, :amount => 5, :value_date => '2013-10-12')
+        FactoryGirl.create(:booking, :amount => 99, :credit_account => cash_account, :debit_account => cash_account, :value_date => '2013-10-12')
+        FactoryGirl.create(:payment_booking, :amount => 7, :value_date => '2013-10-13')
+        Booking.balance_by(debit_account.id).should == -1
+      end
+
+      it "takes conditions into account" do
+        FactoryGirl.create(:invoice_booking, :amount => 10, :value_date => '2013-10-10')
+        FactoryGirl.create(:payment_booking, :amount => 9, :value_date => '2013-10-11')
+        FactoryGirl.create(:invoice_booking, :amount => 5, :value_date => '2013-10-12')
+        FactoryGirl.create(:booking, :amount => 99, :credit_account => cash_account, :debit_account => cash_account, :value_date => '2013-10-12')
+        FactoryGirl.create(:payment_booking, :amount => 7, :value_date => '2013-10-13')
+        Booking.by_value_period(nil, '2013-10-12').balance_by(debit_account.id).should == 6
+      end
+    end
+  end
 end
