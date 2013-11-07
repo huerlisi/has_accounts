@@ -83,11 +83,6 @@ class Account < ActiveRecord::Base
     Booking.by_account(id)
   end
 
-  # Attachments
-  # ===========
-  has_many :attachments, :as => :object
-  accepts_nested_attributes_for :attachments, :reject_if => proc { |attributes| attributes['file'].blank? }
-
   # Helpers
   # =======
   def self.overview(value_range = Date.today, format = :default)
