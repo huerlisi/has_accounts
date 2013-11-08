@@ -104,7 +104,7 @@ class Booking < ActiveRecord::Base
 
   #
   def self.balance_by(account_id)
-    sum(SELECT_ACCOUNTED_AMOUNT % account_id)
+    BigDecimal.new(sum(SELECT_ACCOUNTED_AMOUNT % account_id), 2)
   end
 
   scope :by_text, lambda {|value|
