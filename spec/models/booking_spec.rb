@@ -26,7 +26,7 @@ describe Booking do
     it { should_not accept_values_for(:credit_account, nil) }
   end
 
-  context ".by_value_date" do
+  describe ".by_value_date" do
     it "should find bookings on exact day" do
       date = '2011-05-02'
       booking = FactoryGirl.create(:booking, :value_date => date)
@@ -34,7 +34,7 @@ describe Booking do
     end
   end
 
-  context ".by_account" do
+  describe ".by_account" do
     let!(:account) { FactoryGirl.create(:account) }
     let!(:cash_account) { FactoryGirl.create(:cash_account) }
 
@@ -59,7 +59,7 @@ describe Booking do
     end
   end
 
-  context ".accounted_by" do
+  describe ".accounted_by" do
     let(:cash_account) { FactoryGirl.create(:cash_account) }
     let(:debit_account) { FactoryGirl.create(:debit_account) }
 
@@ -90,7 +90,7 @@ describe Booking do
     end
   end
 
-  context ".balance_by" do
+  describe ".balance_by" do
     let(:cash_account) { FactoryGirl.create(:cash_account) }
     let(:debit_account) { FactoryGirl.create(:debit_account) }
 
