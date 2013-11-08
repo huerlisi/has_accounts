@@ -112,6 +112,12 @@ describe Booking do
         FactoryGirl.create(:payment_booking, :amount => 7, :value_date => '2013-10-13')
         Booking.by_value_period(nil, '2013-10-12').balance_by(debit_account.id).should == 6
       end
+
+      it "should handle non-integer amount" do
+        FactoryGirl.create(:invoice_booking, :amount => 10.5, :value_date => '2013-10-10')
+        FactoryGirl.create(:payment_booking, :amount => 9.2, :value_date => '2013-10-11')
+        Booking.balance_by(debit_account.id).should == 1.3
+      end
     end
   end
 end
