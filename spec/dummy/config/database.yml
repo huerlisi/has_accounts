@@ -4,7 +4,9 @@
 # MySQL and Postgresql username and password are set to
 # match expecations on Travis-CI to simplify automatic testing.
 #
-# Development is expected to be on sqlite3
+# Set the DB environment variable when running specs etc.
+#
+# sqlite3 is the default.
 
 sqlite: &sqlite
   adapter: sqlite3
@@ -29,4 +31,7 @@ test:
   <<: *<%= ENV['DB'] || 'sqlite' %>
 
 development:
-  <<: *sqlite
+  pool: 5
+  timeout: 5000
+  host: localhost
+  <<: *<%= ENV['DB'] || 'mysql' %>
