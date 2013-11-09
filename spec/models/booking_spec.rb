@@ -63,6 +63,26 @@ describe Booking do
     let(:cash_account) { FactoryGirl.create(:cash_account) }
     let(:debit_account) { FactoryGirl.create(:debit_account) }
 
+    it "should accept account id as parameter" do
+      booking = FactoryGirl.create(:invoice_booking)
+      expect{ Booking.accounted_by(debit_account.id).all }.not_to raise_exception
+    end
+
+    it "should accept Account record as parameter" do
+      booking = FactoryGirl.create(:invoice_booking)
+      expect{ Booking.accounted_by(debit_account).all }.not_to raise_exception
+    end
+
+    it "should raise exception for not existing Account id as parameter" do
+      booking = FactoryGirl.create(:invoice_booking)
+      expect{ Booking.accounted_by(999999).all }.to raise_exception
+    end
+
+    it "should raise exception non Account type records as parameter" do
+      booking = FactoryGirl.create(:invoice_booking)
+      expect{ Booking.accounted_by(Object.new).all }.to raise_exception
+    end
+
     context "when accounted by debit_account" do
       it "should use original amount for payment booking" do
         booking = FactoryGirl.create(:invoice_booking)
@@ -93,6 +113,26 @@ describe Booking do
   describe ".balance_by" do
     let(:cash_account) { FactoryGirl.create(:cash_account) }
     let(:debit_account) { FactoryGirl.create(:debit_account) }
+
+    it "should accept account id as parameter" do
+      booking = FactoryGirl.create(:invoice_booking)
+      expect{ Booking.balance_by(debit_account.id) }.not_to raise_exception
+    end
+
+    it "should accept Account record as parameter" do
+      booking = FactoryGirl.create(:invoice_booking)
+      expect{ Booking.balance_by(debit_account) }.not_to raise_exception
+    end
+
+    it "should raise exception for not existing Account id as parameter" do
+      booking = FactoryGirl.create(:invoice_booking)
+      expect{ Booking.balance_by(999999) }.to raise_exception
+    end
+
+    it "should raise exception non Account type records as parameter" do
+      booking = FactoryGirl.create(:invoice_booking)
+      expect{ Booking.balance_by(Object.new) }.to raise_exception
+    end
 
     context "when accounted by debit_account" do
       it "allows summing over the amount" do

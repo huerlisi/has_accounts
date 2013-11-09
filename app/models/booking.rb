@@ -98,12 +98,32 @@ class Booking < ActiveRecord::Base
     'CASE WHEN credit_account_id = debit_account_id THEN 0.0 WHEN credit_account_id = %s THEN -bookings.amount ELSE bookings.amount END'
 
   # Scope where booking amounts are signed according to debit or credit side
-  scope :accounted_by, lambda {|account_id|
+  #
+  # @param account_or_id Account id or object
+  scope :accounted_by, lambda {|account_or_id|
+    if account_or_id.is_a? Account
+      account_id = account_or_id.id
+    elsif Account.exists?(account_or_id)
+      account_id = account_or_id
+    else
+      raise "accounted_by argument needs to be a record of type Account or an id for an existing Account record."
+    end
+
     select("bookings.*, #{SELECT_ACCOUNTED_AMOUNT % account_id} AS amount")
   }
 
+  # Balance of bookings for the specified account
   #
-  def self.balance_by(account_id)
+  # @param account_or_id Account id or object
+  def self.balance_by(account_or_id)
+    if account_or_id.is_a? Account
+      account_id = account_or_id.id
+    elsif Account.exists?(account_or_id)
+      account_id = account_or_id
+    else
+      raise "accounted_by argument needs to be a record of type Account or an id for an existing Account record."
+    end
+
     BigDecimal.new(sum(SELECT_ACCOUNTED_AMOUNT % account_id), 2)
   end
 
