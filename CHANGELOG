@@ -2,18 +2,27 @@
 =====
 This is a major release with some breaking changes.
 
+We now officially support (and test) sqlite3, postgresql and MySQL. The gem
+dependencies have been cleaned up and enhanced.
+
 REMOVED
-* Drop Bank and BankAccount models
+* Drop Bank and BankAccount models.
 
-These models were depending on the Person model from has_vards. This
-is too heavy a dependency.
+  These models were depending on the Person model from has_vards. This
+  is too heavy a dependency.
 
-Reimplement in you application. Take a look at version 1.1.3
+  Reimplement in you application. Take a look at version 1.1.3
+* Drop association in Account to attachments.
+
+NEW
+* Booking.by_account(account_or_id) scope
+* Booking.balance_by(account_or_id) method
 
 FIXES
 * Fix typo in en locale.
 * Make acts_as_taggable support optional for Account model.
 * Deprecated Account.is_*_account? methods in favor of .*_account?
+* Add migration to use 2 decimals for Booking.amount
 
 1.1.3
 =====
