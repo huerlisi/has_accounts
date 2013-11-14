@@ -50,6 +50,8 @@ class BookingTemplate < ActiveRecord::Base
   if defined? ActsAsTaggableOn
     acts_as_taggable
     attr_accessible :tag_list
+
+    acts_as_taggable_on :include_in_saldo
   end
 
   def booking_parameters(params = {})
@@ -159,11 +161,6 @@ class BookingTemplate < ActiveRecord::Base
     end
 
     line_item
-  end
-
-  # Tagging
-  if defined? ActsAsTaggableOn
-    acts_as_taggable_on :include_in_saldo
   end
 
   # Importer
