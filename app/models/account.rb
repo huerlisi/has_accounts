@@ -57,7 +57,7 @@ class Account < ActiveRecord::Base
 
   # Tagging
   # =======
-  if defined? ActsAsTaggableOn
+  if defined?(ActsAsTaggableOn) && ActsAsTaggableOn::Tag.table_exists?
     acts_as_taggable
     attr_accessible :tag_list
 
