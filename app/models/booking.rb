@@ -97,34 +97,55 @@ class Booking < ActiveRecord::Base
   SELECT_ACCOUNTED_AMOUNT=
     'CASE WHEN credit_account_id = debit_account_id THEN 0.0 WHEN credit_account_id = %s THEN -bookings.amount ELSE bookings.amount END'
 
+  private
+  def self.get_account_id(account_or_id)
+    if account_or_id.is_a? Account
+      return account_or_id.id
+    elsif Account.exists?(account_or_id)
+      return account_or_id
+    else
+      raise "argument needs to be a record of type Account or an id for an existing Account record."
+    end
+  end
+
+  public
+
   # Scope where booking amounts are signed according to debit or credit side
   #
   # @param account_or_id Account id or object
   scope :accounted_by, lambda {|account_or_id|
-    if account_or_id.is_a? Account
-      account_id = account_or_id.id
-    elsif Account.exists?(account_or_id)
-      account_id = account_or_id
-    else
-      raise "accounted_by argument needs to be a record of type Account or an id for an existing Account record."
-    end
-
-    select("bookings.*, #{SELECT_ACCOUNTED_AMOUNT % account_id} AS amount")
+    select("bookings.*, #{SELECT_ACCOUNTED_AMOUNT % get_account_id(account_or_id)} AS amount")
   }
 
   # Balance of bookings for the specified account
   #
   # @param account_or_id Account id or object
   def self.balance_by(account_or_id)
-    if account_or_id.is_a? Account
-      account_id = account_or_id.id
-    elsif Account.exists?(account_or_id)
-      account_id = account_or_id
-    else
-      raise "accounted_by argument needs to be a record of type Account or an id for an existing Account record."
-    end
+    BigDecimal.new(sum(SELECT_ACCOUNTED_AMOUNT % get_account_id(account_or_id)), 2)
+  end
 
-    BigDecimal.new(sum(SELECT_ACCOUNTED_AMOUNT % account_id), 2)
+  # Balance of bookings for the specified account with 0 balance, grouped by reference
+  #
+  # @param account_or_id Account id or object
+  def self.unbalanced_by_grouped_reference(account_or_id)
+    # Do a manual sum using select() to be able to give it an alias we can use in having()
+    summs = group(:reference_type, :reference_id).having("balance != 0.0").select("sum(#{SELECT_ACCOUNTED_AMOUNT % get_account_id(account_or_id)}) AS balance, reference_type, reference_id")
+
+    # Simulate Rails grouped summing result format
+    grouped = Hash[summs.map{ |group| [[group[:reference_type], group[:reference_id]], group[:balance]] }]
+
+    # Convert value to BigDecimal
+    Hash[grouped.map{|reference, value| [reference, BigDecimal.new(value, 2)] }]
+  end
+
+  # Balance of bookings for the specified account, grouped by reference
+  #
+  # @param account_or_id Account id or object
+  def self.balance_by_grouped_reference(account_or_id)
+    grouped = group(:reference_type, :reference_id).sum(SELECT_ACCOUNTED_AMOUNT % get_account_id(account_or_id))
+
+    # Convert value to BigDecimal
+    Hash[grouped.map{|reference, value| [reference, BigDecimal.new(value, 2)] }]
   end
 
   scope :by_text, lambda {|value|

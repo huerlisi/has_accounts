@@ -160,4 +160,43 @@ describe Booking do
       end
     end
   end
+
+  describe ".unbalanced_by_grouped_reference" do
+    let(:cash_account) { FactoryGirl.create(:cash_account) }
+    let(:debit_account) { FactoryGirl.create(:debit_account) }
+
+    it "works with no bookings" do
+      Booking.delete_all
+      Booking.unbalanced_by_grouped_reference(cash_account).should == { }
+    end
+
+    it "does not include balanced references" do
+      FactoryGirl.create(:invoice_booking, :amount => 10, :value_date => '2013-10-10', :reference_id => 1)
+      FactoryGirl.create(:payment_booking, :amount => 11.5, :value_date => '2013-10-11', :reference_id => 1)
+      FactoryGirl.create(:invoice_booking, :amount => 1.5, :value_date => '2013-10-12', :reference_id => 1)
+      Booking.unbalanced_by_grouped_reference(debit_account).should == { }
+    end
+
+    it "does include unbalanced references" do
+      FactoryGirl.create(:invoice_booking, :amount => 1, :value_date => '2013-10-10')
+      FactoryGirl.create(:invoice_booking, :amount => 0.5, :value_date => '2013-10-11')
+      FactoryGirl.create(:invoice_booking, :amount => 10, :value_date => '2013-10-10', :reference_id => 1)
+      FactoryGirl.create(:payment_booking, :amount => 11.5, :value_date => '2013-10-11', :reference_id => 1)
+      Booking.unbalanced_by_grouped_reference(debit_account).should == {
+        [nil, nil] => 1.5,
+        [nil, 1] => -1.5
+      }
+    end
+
+    it "does respect conditions" do
+      FactoryGirl.create(:invoice_booking, :amount => 1, :value_date => '2013-10-10')
+      FactoryGirl.create(:invoice_booking, :amount => 0.5, :value_date => '2013-10-11')
+      FactoryGirl.create(:invoice_booking, :amount => 10, :value_date => '2013-10-10', :reference_id => 1)
+      FactoryGirl.create(:payment_booking, :amount => 11.5, :value_date => '2013-10-11', :reference_id => 1)
+      Booking.where("value_date < '2013-10-11'").unbalanced_by_grouped_reference(debit_account).should == {
+        [nil, nil] => 1,
+        [nil, 1] => 10
+      }
+    end
+  end
 end
