@@ -83,6 +83,11 @@ class Account < ActiveRecord::Base
     Booking.by_account(id)
   end
 
+  # Balances grouped by references which have not 0
+  def unbalanced_references
+    bookings.unbalanced_by_grouped_reference(self.id)
+  end
+
   # Helpers
   # =======
   def self.overview(value_range = Date.today, format = :default)
