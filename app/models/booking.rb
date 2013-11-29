@@ -205,9 +205,9 @@ class Booking < ActiveRecord::Base
     end
 
     if account.is_asset_account?
-      return -(balance)
-    else
       return balance
+    else
+      return -(balance)
     end
   end
 

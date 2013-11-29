@@ -144,7 +144,7 @@ class Account < ActiveRecord::Base
   def saldo(selector = Date.today, inclusive = true)
     credit_amount, debit_amount = turnover(selector, inclusive)
 
-    amount = credit_amount - debit_amount
+    amount = debit_amount - credit_amount
 
     return is_asset_account? ? amount : -amount
   end
