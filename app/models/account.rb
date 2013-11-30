@@ -28,7 +28,7 @@ class Account < ActiveRecord::Base
   validates_presence_of :account_type
 
   def asset_account?
-    Account.by_type(['current_assets', 'capital_assets', 'costs']).exists?(self)
+    Account.by_type(['current_assets', 'capital_assets', 'earnings']).exists?(self)
   end
   # Deprecated
   alias_method :is_asset_account?, :asset_account?
