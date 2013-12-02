@@ -158,6 +158,13 @@ describe Booking do
         FactoryGirl.create(:payment_booking, :amount => 9.2, :value_date => '2013-10-11')
         Booking.balance_by(debit_account.id).should == 1.3
       end
+
+      it "should ignore non-related bookings" do
+        FactoryGirl.create(:invoice_booking, :amount => 10.5, :value_date => '2013-10-10')
+        FactoryGirl.create(:payment_booking, :amount => 9.2, :value_date => '2013-10-11')
+        FactoryGirl.create(:booking, :amount => 100, :value_date => '2013-10-11', :debit_account => FactoryGirl.create(:accounts_payable), :credit_account => FactoryGirl.create(:cash_account))
+        Booking.balance_by(debit_account.id).should == 1.3
+      end
     end
   end
 

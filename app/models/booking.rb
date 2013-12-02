@@ -95,7 +95,7 @@ class Booking < ActiveRecord::Base
   # Accounted bookings
   # ==================
   SELECT_ACCOUNTED_AMOUNT=
-    'CASE WHEN credit_account_id = debit_account_id THEN 0.0 WHEN credit_account_id = %s THEN -bookings.amount ELSE bookings.amount END'
+    'CASE WHEN credit_account_id = debit_account_id THEN 0.0 WHEN credit_account_id = %{account_id} THEN -bookings.amount WHEN debit_account_id = %{account_id} THEN bookings.amount ELSE 0 END'
 
   private
   def self.get_account_id(account_or_id)
@@ -114,14 +114,14 @@ class Booking < ActiveRecord::Base
   #
   # @param account_or_id Account id or object
   scope :accounted_by, lambda {|account_or_id|
-    select("bookings.*, #{SELECT_ACCOUNTED_AMOUNT % get_account_id(account_or_id)} AS amount")
+    select("bookings.*, #{SELECT_ACCOUNTED_AMOUNT % {:account_id => get_account_id(account_or_id)}} AS amount")
   }
 
   # Balance of bookings for the specified account
   #
   # @param account_or_id Account id or object
   def self.balance_by(account_or_id)
-    BigDecimal.new(sum(SELECT_ACCOUNTED_AMOUNT % get_account_id(account_or_id)), 2)
+    BigDecimal.new(sum(SELECT_ACCOUNTED_AMOUNT % {:account_id => get_account_id(account_or_id)}), 2)
   end
 
   # Balance of bookings for the specified account with 0 balance, grouped by reference
@@ -129,7 +129,7 @@ class Booking < ActiveRecord::Base
   # @param account_or_id Account id or object
   def self.unbalanced_by_grouped_reference(account_or_id)
     # Do a manual sum using select() to be able to give it an alias we can use in having()
-    summs = group(:reference_type, :reference_id).having("balance != 0.0").select("sum(#{SELECT_ACCOUNTED_AMOUNT % get_account_id(account_or_id)}) AS balance, reference_type, reference_id")
+    summs = group(:reference_type, :reference_id).having("balance != 0.0").select("sum(#{SELECT_ACCOUNTED_AMOUNT % {:account_id => get_account_id(account_or_id)}}) AS balance, reference_type, reference_id")
 
     # Simulate Rails grouped summing result format
     grouped = Hash[summs.map{ |group| [[group[:reference_type], group[:reference_id]], group[:balance]] }]
@@ -142,7 +142,7 @@ class Booking < ActiveRecord::Base
   #
   # @param account_or_id Account id or object
   def self.balance_by_grouped_reference(account_or_id)
-    grouped = group(:reference_type, :reference_id).sum(SELECT_ACCOUNTED_AMOUNT % get_account_id(account_or_id))
+    grouped = group(:reference_type, :reference_id).sum(SELECT_ACCOUNTED_AMOUNT % {:account_id => get_account_id(account_or_id)})
 
     # Convert value to BigDecimal
     Hash[grouped.map{|reference, value| [reference, BigDecimal.new(value, 2)] }]
