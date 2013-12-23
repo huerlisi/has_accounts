@@ -59,6 +59,58 @@ describe Booking do
     end
   end
 
+  describe '.accounts' do
+    let(:cash_account) { FactoryGirl.create(:cash_account) }
+    let(:bank_account) { FactoryGirl.create(:bank_account) }
+    let(:debit_account) { FactoryGirl.create(:debit_account) }
+
+    it 'should work if no bookings are present' do
+      Booking.accounts.should be_empty
+    end
+
+    it 'should include debit accounts' do
+      FactoryGirl.create(:booking, :debit_account => cash_account)
+      Booking.accounts.should include(cash_account)
+    end
+
+    it 'should include credit accounts' do
+      FactoryGirl.create(:booking, :credit_account => cash_account)
+      Booking.accounts.should include(cash_account)
+    end
+
+    it 'should include accounts only once' do
+      FactoryGirl.create(:booking, :debit_account => debit_account, :credit_account => cash_account)
+      FactoryGirl.create(:booking, :debit_account => cash_account, :debit_account => debit_account)
+      Booking.accounts.count.should == 2
+    end
+  end
+
+  describe 'balances' do
+    let(:cash_account) { FactoryGirl.create(:cash_account) }
+    let(:bank_account) { FactoryGirl.create(:bank_account) }
+    let(:debit_account) { FactoryGirl.create(:debit_account) }
+
+    it 'should return empty hash if no bookings are present' do
+      Booking.balances.should == {}
+    end
+
+    it 'should use accounts as keys' do
+      FactoryGirl.create(:booking, :debit_account => cash_account)
+      Booking.balances.keys[0].should be_an Account
+    end
+
+    it 'should include credit accounts' do
+      FactoryGirl.create(:booking, :credit_account => cash_account)
+      Booking.accounts.should include(cash_account)
+    end
+
+    it 'should include accounts only once' do
+      FactoryGirl.create(:booking, :debit_account => debit_account, :credit_account => cash_account)
+      FactoryGirl.create(:booking, :debit_account => cash_account, :debit_account => debit_account)
+      Booking.accounts.count.should == 2
+    end
+  end
+
   describe ".accounted_by" do
     let(:cash_account) { FactoryGirl.create(:cash_account) }
     let(:debit_account) { FactoryGirl.create(:debit_account) }

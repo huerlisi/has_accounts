@@ -92,6 +92,24 @@ class Booking < ActiveRecord::Base
     end
   end
 
+  # All involved accounts
+  #
+  # @returns all involved credit and debit accounts
+  def self.accounts
+    Account.where(:id => pluck(:debit_account_id).uniq + pluck(:credit_account_id).uniq)
+  end
+
+  # Accounts with balances
+  #
+  # @returns [Hash] with involved accounts as keys and balances as values
+  def self.balances
+    account_balances = accounts.map do |account|
+      [account, balance_by(account)]
+    end
+
+    Hash[account_balances]
+  end
+
   # Accounted bookings
   # ==================
   SELECT_ACCOUNTED_AMOUNT=
