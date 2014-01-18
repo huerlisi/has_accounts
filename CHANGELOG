@@ -5,6 +5,9 @@ This is a major release with some breaking changes.
 We now officially support (and test) sqlite3, postgresql and MySQL. The gem
 dependencies have been cleaned up and enhanced.
 
+The libraray got rid of some hard requirements on the consumers Models. We
+got rid of most of it! File an issue on GitHub if you find too strict dependencies.
+
 REMOVED
 * Drop Bank and BankAccount models.
 
@@ -17,12 +20,18 @@ REMOVED
 NEW
 * Booking.by_account(account_or_id) scope
 * Booking.balance_by(account_or_id) method
+* New method Booking.unbalanced_by_grouped_reference(account_or_id).
+* Add method Account#unbalanced_references.
+* Implement .balances and .accounts scopes on Booking.
 
 FIXES
 * Fix typo in en locale.
 * Make acts_as_taggable support optional for Account model.
 * Deprecated Account.is_*_account? methods in favor of .*_account?
 * Add migration to use 2 decimals for Booking.amount
+* Restructure BookingTemplate acts_as_taggable_on declarations.
+* Not only check on acts-as-taggable-on gem inclusion, but only existence of needed table for tag associations.
+
 
 1.1.3
 =====
