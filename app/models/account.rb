@@ -1,3 +1,4 @@
+# Account model
 class Account < ActiveRecord::Base
   # Access restrictions
   attr_accessible :title, :code
@@ -30,26 +31,18 @@ class Account < ActiveRecord::Base
   def asset_account?
     Account.by_type(['current_assets', 'capital_assets', 'costs']).exists?(self)
   end
-  # Deprecated
-  alias_method :is_asset_account?, :asset_account?
 
   def liability_account?
     !asset_account?
   end
-  # Deprecated
-  alias_method :is_liability_account?, :liability_account?
 
   def balance_account?
     Account.by_type(['current_assets', 'capital_assets', 'outside_capital', 'equity_capital']).exists?(self)
   end
-  # Deprecated
-  alias_method :is_balance_account?, :balance_account?
 
   def profit_account?
     !balance_account?
   end
-  # Deprecated
-  alias_method :is_profit_account?, :profit_account?
 
   scope :by_type, lambda {|value| includes(:account_type).where('account_types.name' => value)} do
     include AccountScopeExtension
@@ -146,6 +139,6 @@ class Account < ActiveRecord::Base
 
     amount = debit_amount - credit_amount
 
-    return is_asset_account? ? amount : -amount
+    return asset_account? ? amount : -amount
   end
 end

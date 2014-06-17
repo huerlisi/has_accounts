@@ -52,13 +52,13 @@ class Booking < ActiveRecord::Base
   end
 
   def balance_account
-    return credit_account if credit_account.is_balance_account?
-    return debit_account if debit_account.is_balance_account?
+    return credit_account if credit_account.balance_account?
+    return debit_account if debit_account.balance_account?
   end
 
   def profit_account
-    return credit_account if credit_account.is_profit_account?
-    return debit_account if debit_account.is_profit_account?
+    return credit_account if credit_account.profit_account?
+    return debit_account if debit_account.profit_account?
   end
 
   # Scoping
@@ -222,7 +222,7 @@ class Booking < ActiveRecord::Base
       return BigDecimal.new('0')
     end
 
-    if account.is_asset_account?
+    if account.asset_account?
       return balance
     else
       return -(balance)
