@@ -38,7 +38,7 @@ Add specific seed depending on the needs of your project, e.g.:
     capital_assets = AccountType.find_by_name('capital_assets')
     earnings = AccountType.find_by_name('earnings')
     costs = AccountType.find_by_name('costs')
-    
+
     Account.create!([
       {:code => "1000", :title => "Kasse", :account_type => current_assets},
       {:code => "1100", :title => "Debitoren", :account_type => current_assets},
@@ -69,8 +69,8 @@ License
 =======
 
 * Copyright (c) 2008 Agrabah <http://www.agrabah.ch>
-* Copyright (c) 2008-2011 Simon Hürlimann <simon.huerlimann@cyt.ch>
-* Copyright (c) 2010-2011 CyT <http://www.cyt.ch>
+* Copyright (c) 2008-2014 Simon Hürlimann <simon.huerlimann@cyt.ch>
+* Copyright (c) 2010-2014 CyT <http://www.cyt.ch>
 * Copyright (c) 2008-2010 ZytoLabor <http://www.zyto-labor.com>
 
 Released under the MIT license.
