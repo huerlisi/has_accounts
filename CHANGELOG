@@ -1,3 +1,8 @@
+3.0.0.beta0 (unreleased)
+===========
+As we've made a premajure 2.0.0 release, we bumped our version right up to 3. But
+we're doing proper beta and RC releases this time, promised!
+
 2.0.0
 =====
 This is a major release with some breaking changes.
