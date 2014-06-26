@@ -68,9 +68,4 @@ To use it, simply add the following to your Model:
 License
 =======
 
-* Copyright (c) 2008 Agrabah <http://www.agrabah.ch>
-* Copyright (c) 2008-2014 Simon Hürlimann <simon.huerlimann@cyt.ch>
-* Copyright (c) 2010-2014 CyT <http://www.cyt.ch>
-* Copyright (c) 2008-2010 ZytoLabor <http://www.zyto-labor.com>
-
 Released under the MIT license.
