@@ -9,7 +9,7 @@ Rails plugin providing financal accounting models and helpers.
 Install
 =======
 
-In Rails 3 simply add
+In Rails simply add
 
     gem 'has_accounts'
 
