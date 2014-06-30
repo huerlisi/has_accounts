@@ -9,96 +9,58 @@
 # from scratch. The latter is a flawed and unsustainable approach (the more migrations
 # you'll amass, the slower it'll run and the greater likelihood for issues).
 #
-# It's strongly recommended to check this file into your version control system.
+# It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131105212025) do
+ActiveRecord::Schema.define(version: 20140620151641) do
 
-  create_table "account_types", :force => true do |t|
-    t.string   "name",       :limit => 100
-    t.string   "title",      :limit => 100
+  create_table "has_vcards_addresses", force: true do |t|
+    t.string   "post_office_box",  limit: 50
+    t.string   "extended_address", limit: 50
+    t.string   "street_address",   limit: 50
+    t.string   "locality",         limit: 50
+    t.string   "region",           limit: 50
+    t.string   "postal_code",      limit: 50
+    t.string   "country_name",     limit: 50
+    t.integer  "vcard_id"
+    t.string   "address_type"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "account_types", ["name"], :name => "index_account_types_on_name"
+  add_index "has_vcards_addresses", ["vcard_id"], name: "addresses_vcard_id_index", using: :btree
 
-  create_table "accounts", :force => true do |t|
-    t.string   "title",           :limit => 100
-    t.integer  "parent_id"
-    t.integer  "account_type_id"
-    t.string   "number"
-    t.string   "code"
+  create_table "has_vcards_phone_numbers", force: true do |t|
+    t.string   "number",            limit: 50
+    t.string   "phone_number_type", limit: 50
+    t.integer  "vcard_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "has_vcards_phone_numbers", ["phone_number_type"], name: "index_has_vcards_phone_numbers_on_phone_number_type", using: :btree
+  add_index "has_vcards_phone_numbers", ["vcard_id"], name: "phone_numbers_vcard_id_index", using: :btree
+
+  create_table "has_vcards_vcards", force: true do |t|
+    t.string   "full_name",        limit: 50
+    t.string   "nickname",         limit: 50
+    t.string   "family_name",      limit: 50
+    t.string   "given_name",       limit: 50
+    t.string   "additional_name",  limit: 50
+    t.string   "honorific_prefix", limit: 50
+    t.string   "honorific_suffix", limit: 50
+    t.boolean  "active",                      default: true
     t.string   "type"
-    t.integer  "holder_id"
-    t.string   "holder_type"
-    t.integer  "bank_id"
-    t.integer  "esr_id"
-    t.string   "pc_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "iban"
-  end
-
-  add_index "accounts", ["account_type_id"], :name => "index_accounts_on_account_type_id"
-  add_index "accounts", ["bank_id"], :name => "index_accounts_on_bank_id"
-  add_index "accounts", ["code"], :name => "index_accounts_on_code"
-  add_index "accounts", ["holder_id", "holder_type"], :name => "index_accounts_on_holder_id_and_holder_type"
-  add_index "accounts", ["parent_id"], :name => "index_accounts_on_parent_id"
-  add_index "accounts", ["type"], :name => "index_accounts_on_type"
-
-  create_table "booking_templates", :force => true do |t|
-    t.string   "title"
-    t.string   "amount"
-    t.integer  "credit_account_id"
-    t.integer  "debit_account_id"
-    t.text     "comments"
-    t.datetime "created_at",              :null => false
-    t.datetime "updated_at",              :null => false
-    t.string   "code"
-    t.string   "matcher"
-    t.string   "amount_relates_to"
-    t.string   "type"
-    t.string   "charge_rate_code"
-    t.string   "salary_declaration_code"
-    t.integer  "position"
-  end
-
-  create_table "bookings", :force => true do |t|
-    t.string   "title",             :limit => 100
-    t.decimal  "amount",                            :precision => 10, :scale => 2
-    t.integer  "credit_account_id"
-    t.integer  "debit_account_id"
-    t.date     "value_date"
-    t.text     "comments",          :limit => 1000,                                :default => ""
-    t.string   "scan"
-    t.string   "debit_currency",                                                   :default => "CHF"
-    t.string   "credit_currency",                                                  :default => "CHF"
-    t.float    "exchange_rate",                                                    :default => 1.0
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.integer  "reference_id"
     t.string   "reference_type"
-    t.integer  "template_id"
-    t.string   "template_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  add_index "bookings", ["credit_account_id"], :name => "index_bookings_on_credit_account_id"
-  add_index "bookings", ["debit_account_id"], :name => "index_bookings_on_debit_account_id"
-  add_index "bookings", ["reference_id", "reference_type"], :name => "index_bookings_on_reference_id_and_reference_type"
-  add_index "bookings", ["template_id", "template_type"], :name => "index_bookings_on_template_id_and_template_type"
-  add_index "bookings", ["value_date"], :name => "index_bookings_on_value_date"
+  add_index "has_vcards_vcards", ["active"], name: "index_has_vcards_vcards_on_active", using: :btree
+  add_index "has_vcards_vcards", ["reference_id", "reference_type"], name: "index_has_vcards_vcards_on_reference_id_and_reference_type", using: :btree
 
-  create_table "invoices", :force => true do |t|
-    t.date     "value_date"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  create_table "people", :force => true do |t|
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-    t.string   "swift"
-    t.string   "clearing"
+  create_table "somethings", force: true do |t|
+    t.string "title"
   end
 
 end

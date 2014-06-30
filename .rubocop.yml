@@ -1,0 +1,69 @@
+require: rubocop-rspec
+
+AllCops:
+  Include:
+    - Rakefile
+  Exclude:
+    - bin/**/*
+    - db/**/*
+    - spec/dummy/**/*
+
+
+# Main style rules
+# ================
+
+# Relax maximum line length
+LineLength:
+  Max: 180
+
+# Allow if/unless statements with only one line
+IfUnlessModifier:
+  Enabled: false
+
+# Allow block comments (=begin/=end)
+BlockComments:
+  Enabled: false
+
+# Allow spaces at beginning/end of brackets
+SpaceInsideBrackets:
+  Enabled: false
+
+# Don't allow double-quoted strings without interpolation
+StringLiterals:
+  Enabled: true
+
+# Don't use %w for word arrays
+WordArray:
+  Enabled: false
+
+# Specify desired delimiters for percent literals
+PercentLiteralDelimiters:
+  PreferredDelimiters:
+    '%':  '{}'
+    '%q': '{}'
+    '%Q': '{}'
+    '%r': '{}'
+    '%s': '{}'
+    '%x': '{}'
+
+    '%i': '[]'
+    '%w': '[]'
+    '%W': '[]'
+
+# RSpec rules
+# ===========
+
+RSpec/DescribeClass:
+  Exclude:
+    - spec/features/**/*
+    - spec/routing/**/*
+
+RSpec/DescribedClass:
+  Enabled: false
+
+RSpec/InstanceVariable:
+  Enabled: false
+
+Style/BracesAroundHashParameters:
+  Exclude:
+    - spec/controllers/**/*

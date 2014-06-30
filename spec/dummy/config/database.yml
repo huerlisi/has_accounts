@@ -16,13 +16,13 @@ mysql: &mysql
   adapter: mysql2
   username: root
   password:
-  database: has_accounts_test
+  database: has_vcard_test
 
 postgresql: &postgresql
   adapter: postgresql
   username: postgres
   password:
-  database: has_accounts_test
+  database: has_vcard_test
 
 test:
   pool: 5

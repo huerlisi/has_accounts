@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe BookingTemplate do
   context 'Factory methods' do
