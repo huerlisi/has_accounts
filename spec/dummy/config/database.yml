@@ -20,7 +20,7 @@ mysql: &mysql
 
 postgresql: &postgresql
   adapter: postgresql
-  username: <%= ENV['DB_USER'] || postgres %>
+  username: <%= ENV['DB_USER'] || 'postgres' %>
   database: has_accounts_test
 
 test:
