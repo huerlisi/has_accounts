@@ -3,7 +3,7 @@ FactoryGirl.define do
     code  '0000'
     title 'Test Account'
     association :account_type
-    initialize_with { Account.find_or_create_by_code(code)}
+    initialize_with { Account.where(:code => code).first || Account.create(:code => code) }
 
     factory :accounts_payable, :parent => :account do
       code  '2000'
