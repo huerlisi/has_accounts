@@ -147,7 +147,8 @@ class Booking < ActiveRecord::Base
   # @param account_or_id Account id or object
   def self.unbalanced_by_grouped_reference(account_or_id)
     # Do a manual sum using select() to be able to give it an alias we can use in having()
-    summs = group(:reference_type, :reference_id).having("balance != 0.0").select("sum(#{SELECT_ACCOUNTED_AMOUNT % {:account_id => get_account_id(account_or_id)}}) AS balance, reference_type, reference_id")
+    balance_select = "sum(#{SELECT_ACCOUNTED_AMOUNT % {:account_id => get_account_id(account_or_id)}})"
+    summs = group(:reference_type, :reference_id).having("#{balance_select} != 0.0").select("reference_type, reference_id, #{balance_select} AS balance").reorder(nil)
 
     # Simulate Rails grouped summing result format
     grouped = Hash[summs.map{ |group| [[group[:reference_type], group[:reference_id]], group[:balance]] }]
