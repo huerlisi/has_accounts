@@ -48,7 +48,7 @@ class CreateHasAccountsTables < ActiveRecord::Migration
       t.integer  "credit_account_id"
       t.integer  "debit_account_id"
       t.date     "value_date"
-      t.text     "comments",          :limit => 1000, :default => ""
+      t.text     "comments",          :limit => 1000
       t.string   "scan"
       t.string   "debit_currency",                    :default => "CHF"
       t.string   "credit_currency",                   :default => "CHF"
