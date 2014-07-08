@@ -1,6 +1,6 @@
 class BookingTemplate < ActiveRecord::Base
   # Access restrictions
-  attr_accessible :title, :code, :amount, :amount_relates_to, :comments
+  attr_accessible :title, :code, :amount, :amount_relates_to, :comments, :charge_rate_code
 
   # Associations
   belongs_to :debit_account, :foreign_key => 'debit_account_id', :class_name => "Account"
