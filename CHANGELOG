@@ -1,3 +1,22 @@
+2.0.1
+=====
+FIXES
+* Add rspec config.
+* Update copyrights.
+* Refactor all usage of deprecated #is_XXX_account? calls.
+* Drop legacy init.rb
+* Move Copyright declarations from README to LICENSE.
+* README fix to not only talk about rails 3.
+* Update .rspec.
+* Cleanup gitignore.
+* Drop default value for text column bookings.comments.
+* Do not use find_or_create_by.
+* Use double instead of stub_model.
+* Adapt database.yml so it allows both local and travis spec runs.
+* Add missing quotes in database.yml
+* Fix SQL statement for Booking#unbalanced_by_grouped_reference.
+* Add charge_rate_code to attr_accessible for BookingTemplate.
+
 2.0.0
 =====
 This is a major release with some breaking changes.
