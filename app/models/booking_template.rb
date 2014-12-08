@@ -8,6 +8,8 @@ class BookingTemplate < ActiveRecord::Base
   belongs_to :credit_account, :foreign_key => 'credit_account_id', :class_name => "Account"
   attr_accessible :credit_account_id, :credit_account
 
+  has_many :bookings, :through => :line_items
+
   # Default ordering
   default_scope order(:code)
 
