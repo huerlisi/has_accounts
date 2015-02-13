@@ -1,7 +1,9 @@
-2.0.3 (unreleased)
+2.0.3
 ====
 FIXES
 * Guard against disappeared previous reference.
+* Use docker builds and ruby 2.1.5 on travis.
+* Fix credit/debit switch in #to_s methods.
 
 2.0.2
 =====
