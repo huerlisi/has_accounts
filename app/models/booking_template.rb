@@ -22,14 +22,14 @@ class BookingTemplate < ActiveRecord::Base
     case format
     when :short
       "%s / %s %s" % [
-        credit_account ? credit_account.to_s(:short) : '?',
         debit_account ? debit_account.to_s(:short) : '?',
+        credit_account ? credit_account.to_s(:short) : '?',
         amount ? "%0.2f" % amount.to_f : '?',
       ]
     when :long
       "%s an %s %s, %s (%s)" % [
-        credit_account ? credit_account.to_s : '?',
         debit_account ? debit_account.to_s : '?',
+        credit_account ? credit_account.to_s : '?',
         amount ? "%0.2f" % amount.to_f : '?',
         title.present? ? title : '?',
         comments.present? ? comments : '?'
