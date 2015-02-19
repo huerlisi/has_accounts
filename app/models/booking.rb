@@ -181,7 +181,7 @@ class Booking < ActiveRecord::Base
     rescue ArgumentError
     end
 
-    where("title LIKE :text OR comments LIKE :text OR amount = :amount OR value_date = :value_date", :text => text, :amount => amount, :value_date => date)
+    where("title ILIKE :text OR comments ILIKE :text OR amount = :amount OR value_date = :value_date", :text => text, :amount => amount, :value_date => date)
   }
 
   # Returns array of all years we have bookings for
