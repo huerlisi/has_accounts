@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.name         = "has_accounts"
   s.version      = HasAccounts::VERSION
   s.summary      = "HasAccounts provides models for financial accounting."
-  s.description  = "HasAccounts is a full featured Rails 3 gem providing models for financial accounting."
+  s.description  = "HasAccounts is a full featured Rails gem providing models for financial accounting."
 
   s.homepage     = "https://github.com/huerlisi/has_accounts"
   s.authors      = ["Simon Hürlimann (CyT)"]
