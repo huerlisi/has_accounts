@@ -1,3 +1,15 @@
+2.1.0
+=====
+FIXES
+* Use case insensitive search in Booking#by_text.
+* Language fixes in gem description and README.
+
+CLEANUPS
+* Update all gems.
+* Include ruby version 2.2.0 on travis.
+* Add default .ruby-version of 2.1.5 for rbenv.
+* Autocorrect some syntax/style issues using rubocop.
+
 2.0.3
 ====
 FIXES
