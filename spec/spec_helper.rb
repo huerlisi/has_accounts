@@ -19,7 +19,6 @@ Dir["#{File.dirname(__FILE__)}/factories/**/*.rb"].each { |f| require f }
 
 # Matchers
 require 'accept_values_for'
-require 'discover'
 require 'shoulda'
 
 RSpec.configure do |config|
