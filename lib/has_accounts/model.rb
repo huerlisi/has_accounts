@@ -1,23 +1,23 @@
 module HasAccounts
   module Model
     extend ActiveSupport::Concern
-    
+
     included do
       class_attribute :direct_account
 
-      has_many :bookings, :as => :reference, :dependent => :nullify, :inverse_of => :reference do
+      has_many :bookings, as: :reference, dependent: :nullify, inverse_of: :reference do
         # TODO: duplicated in Booking (without parameter)
         def direct_balance(value_date = nil, direct_account = nil)
           return BigDecimal.new('0') unless proxy_association.owner.direct_account
-          
+
           direct_account ||= proxy_association.owner.direct_account
           balance = BigDecimal.new('0')
 
           # Scope by value_date
-          if value_date.is_a? Range or value_date.is_a? Array
-            direct_bookings = where("date(value_date) BETWEEN :from AND :to", :from => value_date.first, :to => value_date.last)
+          if value_date.is_a?(Range) || value_date.is_a?(Array)
+            direct_bookings = where('date(value_date) BETWEEN :from AND :to', from: value_date.first, to: value_date.last)
           elsif value_date
-            direct_bookings = where("date(value_date) <= ?", value_date) if value_date
+            direct_bookings = where('date(value_date) <= ?', value_date) if value_date
           else
             direct_bookings = scoped
           end
@@ -43,7 +43,7 @@ module HasAccounts
       booking_template = BookingTemplate.find_by_code(template_code)
 
       # Prepare booking parameters
-      booking_params = {:reference => self}
+      booking_params = { reference: self }
       booking_params.merge!(params)
 
       # Build and assign booking

@@ -2,7 +2,7 @@ FactoryGirl.define do
   factory :account_type do
     title 'Test Account Type'
     name 'test'
-  
+
     factory :current_assets do
       title 'Current Assets'
       name 'current_assets'

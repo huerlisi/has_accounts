@@ -6,6 +6,6 @@ module AccountScopeExtension
       new_saldo += account.saldo(selector, inclusive)
     end
 
-    return new_saldo
+    new_saldo
   end
 end

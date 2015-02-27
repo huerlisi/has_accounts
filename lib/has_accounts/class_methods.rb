@@ -1,6 +1,6 @@
 module HasAccounts
   module ClassMethods
-    def has_accounts(options = {})
+    def has_accounts(_options = {})
       class_eval <<-end_eval
         has_many :accounts, :as => 'holder'
         has_one :account, :as => 'holder'

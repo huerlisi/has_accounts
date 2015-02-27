@@ -4,7 +4,7 @@ class Account < ActiveRecord::Base
   attr_accessible :title, :code
 
   # Scopes
-  default_scope :order => 'code'
+  default_scope order: 'code'
 
   # Dummy scope to make scoped_by happy
   scope :by_value_period, scoped
@@ -13,13 +13,13 @@ class Account < ActiveRecord::Base
   validates_presence_of :code, :title
 
   # String
-  def to_s(format = :default)
-    "%s (%s)" % [title, code]
+  def to_s(_format = :default)
+    '%s (%s)' % [title, code]
   end
 
   # Parent Account
   # ==============
-  belongs_to :parent, :class_name => Account
+  belongs_to :parent, class_name: Account
   attr_accessible :parent, :parent_id
 
   # Account Type
@@ -29,7 +29,7 @@ class Account < ActiveRecord::Base
   validates_presence_of :account_type
 
   def asset_account?
-    Account.by_type(['current_assets', 'capital_assets', 'costs']).exists?(self)
+    Account.by_type(%w(current_assets capital_assets costs)).exists?(self)
   end
 
   def liability_account?
@@ -37,14 +37,14 @@ class Account < ActiveRecord::Base
   end
 
   def balance_account?
-    Account.by_type(['current_assets', 'capital_assets', 'outside_capital', 'equity_capital']).exists?(self)
+    Account.by_type(%w(current_assets capital_assets outside_capital equity_capital)).exists?(self)
   end
 
   def profit_account?
     !balance_account?
   end
 
-  scope :by_type, lambda {|value| includes(:account_type).where('account_types.name' => value)} do
+  scope :by_type, lambda { |value| includes(:account_type).where('account_types.name' => value) } do
     include AccountScopeExtension
   end
 
@@ -65,12 +65,12 @@ class Account < ActiveRecord::Base
 
   # Holder
   # ======
-  belongs_to :holder, :polymorphic => true
+  belongs_to :holder, polymorphic: true
 
   # Bookings
   # ========
-  has_many :credit_bookings, :class_name => "Booking", :foreign_key => "credit_account_id"
-  has_many :debit_bookings, :class_name => "Booking", :foreign_key => "debit_account_id"
+  has_many :credit_bookings, class_name: 'Booking', foreign_key: 'credit_account_id'
+  has_many :debit_bookings, class_name: 'Booking', foreign_key: 'debit_account_id'
 
   def bookings
     Booking.by_account(id)
@@ -78,51 +78,51 @@ class Account < ActiveRecord::Base
 
   # Balances grouped by references which have not 0
   def unbalanced_references
-    bookings.unbalanced_by_grouped_reference(self.id)
+    bookings.unbalanced_by_grouped_reference(id)
   end
 
   # Helpers
   # =======
   def self.overview(value_range = Date.today, format = :default)
-    Account.all.map{|a| a.to_s(value_range, format)}
+    Account.all.map { |a| a.to_s(value_range, format) }
   end
 
   # Calculations
   def turnover(selector = Date.today, inclusive = true)
-    equality = "=" if inclusive
+    equality = '=' if inclusive
 
-    if selector.respond_to?(:first) and selector.respond_to?(:last)
+    if selector.respond_to?(:first) && selector.respond_to?(:last)
       if selector.first.is_a? Booking
         if selector.first.value_date == selector.last.value_date
           condition = ["date(value_date) = :value_date AND id >#{equality} :first_id AND id <#{equality} :last_id", {
-            :value_date => selector.first.value_date,
-            :first_id => selector.first.id,
-            :last_id => selector.last.id
+            value_date: selector.first.value_date,
+            first_id: selector.first.id,
+            last_id: selector.last.id
           }]
         else
           condition = ["(value_date > :first_value_date AND value_date < :latest_value_date) OR (date(value_date) = :first_value_date AND id >#{equality} :first_id) OR (date(value_date) = :latest_value_date AND id <#{equality} :last_id)", {
-            :first_value_date => selector.first.value_date,
-            :latest_value_date => selector.last.value_date,
-            :first_id => selector.first.id,
-            :last_id => selector.last.id
+            first_value_date: selector.first.value_date,
+            latest_value_date: selector.last.value_date,
+            first_id: selector.first.id,
+            last_id: selector.last.id
           }]
         end
       elsif
         if selector.first == selector.last
-          condition = ["date(value_date) = :value_date", {
-            :value_date => selector.first
+          condition = ['date(value_date) = :value_date', {
+            value_date: selector.first
           }]
         else
-          condition = ["date(value_date) BETWEEN :first_value_date AND :latest_value_date", {
-            :first_value_date => selector.first,
-            :latest_value_date => selector.last
+          condition = ['date(value_date) BETWEEN :first_value_date AND :latest_value_date', {
+            first_value_date: selector.first,
+            latest_value_date: selector.last
           }]
         end
       end
     else
       if selector.is_a? Booking
         # date(value_date) is needed on sqlite!
-        condition = ["(value_date < :value_date) OR (date(value_date) = :value_date AND id <#{equality} :id)", {:value_date => selector.value_date, :id => selector.id}]
+        condition = ["(value_date < :value_date) OR (date(value_date) = :value_date AND id <#{equality} :id)", { value_date: selector.value_date, id: selector.id }]
       else
         condition = ["date(value_date) <#{equality} ?", selector]
       end
@@ -139,6 +139,6 @@ class Account < ActiveRecord::Base
 
     amount = debit_amount - credit_amount
 
-    return asset_account? ? amount : -amount
+    asset_account? ? amount : -amount
   end
 end

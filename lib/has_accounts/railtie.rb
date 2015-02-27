@@ -8,6 +8,6 @@ require 'validates_timeliness'
 
 module HasAccounts
   class Railtie < Rails::Engine
-    engine_name "has_accounts"
+    engine_name 'has_accounts'
   end
 end

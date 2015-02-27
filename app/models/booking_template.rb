@@ -3,34 +3,34 @@ class BookingTemplate < ActiveRecord::Base
   attr_accessible :title, :code, :amount, :amount_relates_to, :comments, :charge_rate_code
 
   # Associations
-  belongs_to :debit_account, :foreign_key => 'debit_account_id', :class_name => "Account"
+  belongs_to :debit_account, foreign_key: 'debit_account_id', class_name: 'Account'
   attr_accessible :debit_account_id, :debit_account
-  belongs_to :credit_account, :foreign_key => 'credit_account_id', :class_name => "Account"
+  belongs_to :credit_account, foreign_key: 'credit_account_id', class_name: 'Account'
   attr_accessible :credit_account_id, :credit_account
 
-  has_many :bookings, :through => :line_items
+  has_many :bookings, through: :line_items
 
   # Default ordering
   default_scope order(:code)
 
   # Scopes
-  scope :by_type, lambda{|value| where("code LIKE ?", value + ':%')}
+  scope :by_type, lambda { |value| where('code LIKE ?', value + ':%') }
 
   # Standard methods
   include ApplicationHelper
   def to_s(format = :default)
     case format
     when :short
-      "%s / %s %s" % [
+      '%s / %s %s' % [
         debit_account ? debit_account.to_s(:short) : '?',
         credit_account ? credit_account.to_s(:short) : '?',
-        amount ? "%0.2f" % amount.to_f : '?',
+        amount ? '%0.2f' % amount.to_f : '?'
       ]
     when :long
-      "%s an %s %s, %s (%s)" % [
+      '%s an %s %s, %s (%s)' % [
         debit_account ? debit_account.to_s : '?',
         credit_account ? credit_account.to_s : '?',
-        amount ? "%0.2f" % amount.to_f : '?',
+        amount ? '%0.2f' % amount.to_f : '?',
         title.present? ? title : '?',
         comments.present? ? comments : '?'
       ]
@@ -41,7 +41,7 @@ class BookingTemplate < ActiveRecord::Base
 
   def amount_to_s
     if amount_relates_to.present?
-      return "%.2f%%" % (amount.to_f * 100)
+      return '%.2f%%' % (amount.to_f * 100)
     else
       return currency_fmt(amount)
     end
@@ -60,17 +60,17 @@ class BookingTemplate < ActiveRecord::Base
     params = HashWithIndifferentAccess.new(params)
 
     # Prepare parameters set by template
-    booking_params = attributes.reject{|key, value| !["title", "comments", "credit_account_id", "debit_account_id"].include?(key)}
+    booking_params = attributes.reject { |key, _value| !%w(title comments credit_account_id debit_account_id).include?(key) }
 
     # Calculate amount
-    booking_amount = BigDecimal.new(self.amount.to_s || '0')
+    booking_amount = BigDecimal.new(amount.to_s || '0')
 
     # Lookup reference
     reference = params['reference']
     unless reference
       ref_type = params['reference_type']
       ref_id = params['reference_id']
-      if ref_type.present? and ref_id.present?
+      if ref_type.present? && ref_id.present?
         reference = ref_type.constantize.find(ref_id)
       end
     end
@@ -79,15 +79,15 @@ class BookingTemplate < ActiveRecord::Base
 
     if reference
       # Calculate amount
-      booking_amount = amount(reference.value_date, :person_id => person_id) if person_id
+      booking_amount = amount(reference.value_date, person_id: person_id) if person_id
 
-      case self.amount_relates_to
+      case amount_relates_to
         when 'reference_amount'
           booking_amount *= reference.amount unless reference.amount.nil?
         when 'reference_balance'
           booking_amount *= reference.balance unless reference.balance.nil?
         when 'reference_amount_minus_balance'
-          booking_amount *= reference.amount - reference.balance unless (reference.amount.nil? or reference.balance.nil?)
+          booking_amount *= reference.amount - reference.balance unless reference.amount.nil? || reference.balance.nil?
       end
     end
 
@@ -117,7 +117,7 @@ class BookingTemplate < ActiveRecord::Base
   # @return [Booking] unsaved Booking
   def self.build_booking(code, params = {})
     template = find_by_code(code)
-    raise "BookingTemplate not found for '#{code}'" unless template
+    fail "BookingTemplate not found for '#{code}'" unless template
 
     template.build_booking params
   end
@@ -130,36 +130,36 @@ class BookingTemplate < ActiveRecord::Base
   has_many :line_items
 
   def build_line_item
-    if self.amount.match(/%/) or self.amount_relates_to.blank?
+    if amount.match(/%/) || amount_relates_to.blank?
       line_item_class = LineItem
     else
       line_item_class = SaldoLineItem
     end
 
     line_item = line_item_class.new(
-      :booking_template      => self,
-      :title                 => self.title,
-      :code                  => self.code,
-      :credit_account        => self.credit_account,
-      :debit_account         => self.debit_account,
-      :position              => self.position,
-      :include_in_saldo_list => self.include_in_saldo_list,
-      :reference_code        => self.amount_relates_to
+      booking_template: self,
+      title: title,
+      code: code,
+      credit_account: credit_account,
+      debit_account: debit_account,
+      position: position,
+      include_in_saldo_list: include_in_saldo_list,
+      reference_code: amount_relates_to
     )
 
-    if self.amount.match(/%/)
+    if amount.match(/%/)
       line_item.quantity = '%'
-      line_item.times    = self.amount.delete('%')
+      line_item.times    = amount.delete('%')
       # TODO: hack
       line_item.price    = line_item.price
-    elsif self.amount_relates_to.present?
+    elsif amount_relates_to.present?
       line_item.quantity = 'saldo_of'
       # TODO: hack
       line_item.price    = line_item.price
     else
       line_item.quantity = 'x'
       line_item.times    = 1
-      line_item.price    = self.amount
+      line_item.price    = amount
     end
 
     line_item
@@ -170,10 +170,10 @@ class BookingTemplate < ActiveRecord::Base
   attr_accessible :matcher
 
   def self.import(struct)
-    templates = self.all.inject([]) do |found, template|
-      puts "matcher: " + template.matcher
+    templates = all.inject([]) do |found, template|
+      puts 'matcher: ' + template.matcher
       puts 'text: ' + struct.text
-      found << template if not Regexp.new(template.matcher).match(struct.text).eql?nil
+      found << template unless Regexp.new(template.matcher).match(struct.text).eql? nil
     end
     puts templates.inspect
   end
