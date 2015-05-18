@@ -31,4 +31,7 @@ RSpec.configure do |config|
 
   # Fixtures
   config.use_transactional_fixtures = true
+
+  # Legacy
+  config.infer_spec_type_from_file_location!
 end
