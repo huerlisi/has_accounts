@@ -23,6 +23,7 @@ group :test do
   # Matchers/Helpers
   gem 'shoulda'
   gem 'accept_values_for'
+  gem 'rspec-its'
 
   # Database
   gem 'sqlite3'
