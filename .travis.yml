@@ -4,7 +4,6 @@ cache: bundler
 script: "bundle exec rake spec"
 
 rvm:
-  - 1.9.3
   - 2.1.5
   - 2.2.0
 
