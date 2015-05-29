@@ -14,8 +14,8 @@ gem 'rails', '~> 3.2'
 group :test do
   # Framework
   gem 'test-unit'
-  gem 'rspec', '~> 2.14'
-  gem 'rspec-rails', '~> 2.14'
+  gem 'rspec'
+  gem 'rspec-rails'
 
   # Fixtures
   gem 'factory_girl_rails', '~>1.1'
