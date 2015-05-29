@@ -108,6 +108,28 @@ class Booking < ActiveRecord::Base
     end
   }
 
+  # Scope for amount range filter
+  scope :by_amount_range, lambda {|amount_from, amount_to|
+    if amount_from.present? && amount_to.present?
+      where(:amount => amount_from..amount_to)
+    elsif amount_from.present?
+      where('amount >= ?', amount_from)
+    elsif amount_to.present?
+      where('amount <= ?', amount_to)
+    end
+  }
+
+  # Scope for amount filter
+  scope :by_amount, lambda {|*args|
+    if args.count == 0
+      scoped
+    elsif args.count == 1
+      where(:amount => args[0])
+    elsif args.count == 2
+      by_amount_range(args[0], args[1])
+    end
+  }
+
   # Scope for all accounts assigned to account
   #
   # @param account_id [Integer]

@@ -93,6 +93,45 @@ describe Booking do
     end
   end
 
+  describe '.by_amount' do
+    let!(:booking_little) { FactoryGirl.create(:booking, amount: 0.1) }
+    let!(:booking_medium) { FactoryGirl.create(:booking, amount: 1) }
+    let!(:booking_much) { FactoryGirl.create(:booking, amount: 10) }
+
+    context 'with no arguments' do
+      it 'should find all bookings' do
+        expect(Booking.by_amount).to contain_exactly(booking_little, booking_medium, booking_much)
+      end
+    end
+
+    context 'with one argument' do
+      it 'should find bookings with exact amount' do
+        expect(Booking.by_amount(1)).to contain_exactly(booking_medium)
+      end
+
+      it 'should handle BigDecimal parameters' do
+        expect(Booking.by_amount(BigDecimal.new('1'))).to contain_exactly(booking_medium)
+      end
+    end
+
+    context 'with two arguments' do
+      it 'should find bookings with minimum amount' do
+        expect(Booking.by_amount(1, nil)).to include(booking_medium)
+      end
+
+      it 'should find bookings with maximum amount' do
+        expect(Booking.by_amount(nil, 1)).to include(booking_medium)
+      end
+
+      it 'should find bookings between minimum and maximum amount' do
+        FactoryGirl.create(:booking, amount: 0.01)
+        FactoryGirl.create(:booking, amount: 11)
+
+        expect(Booking.by_amount(0.1, 10)).to contain_exactly(booking_little, booking_medium, booking_much)
+      end
+    end
+  end
+
   describe '.by_account' do
     let!(:account) { FactoryGirl.create(:account) }
     let!(:cash_account) { FactoryGirl.create(:cash_account) }
