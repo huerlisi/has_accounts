@@ -5,6 +5,7 @@ require File.expand_path('../dummy/config/environment.rb',  __FILE__)
 require 'rspec/rails'
 require 'rspec/its'
 require 'pry-rails'
+require 'pry-byebug'
 
 Rails.backtrace_cleaner.remove_silencers!
 

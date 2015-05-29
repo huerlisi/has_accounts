@@ -34,6 +34,7 @@ end
 group :tools do
   # Debugger
   gem 'pry-rails'
+  gem 'pry-byebug'
 end
 
 gem 'validates_timeliness'
