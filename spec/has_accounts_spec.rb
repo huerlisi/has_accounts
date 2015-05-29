@@ -2,13 +2,13 @@ require 'spec_helper'
 
 describe HasAccounts do
   it 'should be valid' do
-    HasAccounts.should be_a(Module)
+    expect(HasAccounts).to be_a(Module)
   end
 end
 
 describe Invoice do
-  it { should respond_to(:bookings) }
-  it { should respond_to(:direct_account) }
+  it { is_expected.to respond_to(:bookings) }
+  it { is_expected.to respond_to(:direct_account) }
 
   context 'bookings' do
     subject { Invoice.new.bookings }

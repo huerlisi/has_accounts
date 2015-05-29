@@ -5,25 +5,25 @@ describe Booking do
 
   its(:title) { should == 'Simple Booking' }
 
-  it { should belong_to :debit_account }
-  it { should belong_to :credit_account }
-  it { should belong_to :template }
+  it { is_expected.to belong_to :debit_account }
+  it { is_expected.to belong_to :credit_account }
+  it { is_expected.to belong_to :template }
 
   context 'validations' do
-    it { should accept_values_for(:title, 'Test', 'Test Account!') }
-    it { should_not accept_values_for(:title, '', nil) }
+    it { is_expected.to accept_values_for(:title, 'Test', 'Test Account!') }
+    it { is_expected.not_to accept_values_for(:title, '', nil) }
 
-    it { should accept_values_for(:amount, '0', '1.1', 2, 0.752, -88, '-8.3') }
-    it { should_not accept_values_for(:amount, '', nil, 'nada') }
+    it { is_expected.to accept_values_for(:amount, '0', '1.1', 2, 0.752, -88, '-8.3') }
+    it { is_expected.not_to accept_values_for(:amount, '', nil, 'nada') }
 
-    it { should accept_values_for(:value_date, '1990-01-02', '20.3.2001', Date.today) }
-    it { should_not accept_values_for(:value_date, '', nil, '30.2.1990', 'heute') }
+    it { is_expected.to accept_values_for(:value_date, '1990-01-02', '20.3.2001', Date.today) }
+    it { is_expected.not_to accept_values_for(:value_date, '', nil, '30.2.1990', 'heute') }
 
-    it { should accept_values_for(:debit_account, FactoryGirl.build(:cash_account), FactoryGirl.build(:accounts_payable)) }
-    it { should_not accept_values_for(:debit_account, nil) }
+    it { is_expected.to accept_values_for(:debit_account, FactoryGirl.build(:cash_account), FactoryGirl.build(:accounts_payable)) }
+    it { is_expected.not_to accept_values_for(:debit_account, nil) }
 
-    it { should accept_values_for(:credit_account, FactoryGirl.build(:cash_account), FactoryGirl.build(:accounts_payable)) }
-    it { should_not accept_values_for(:credit_account, nil) }
+    it { is_expected.to accept_values_for(:credit_account, FactoryGirl.build(:cash_account), FactoryGirl.build(:accounts_payable)) }
+    it { is_expected.not_to accept_values_for(:credit_account, nil) }
   end
 
   describe '.by_date' do
@@ -81,7 +81,7 @@ describe Booking do
     it 'should find bookings on exact day' do
       date = '2011-05-02'
       booking = FactoryGirl.create(:booking, value_date: date)
-      Booking.by_value_date(date).should include booking
+      expect(Booking.by_value_date(date)).to include booking
     end
   end
 
@@ -130,22 +130,22 @@ describe Booking do
 
     it 'should include bookings with account as debit account' do
       booking = FactoryGirl.create(:booking, debit_account: account, credit_account: cash_account)
-      Booking.by_account(account.id).should include(booking)
+      expect(Booking.by_account(account.id)).to include(booking)
     end
 
     it 'should include bookings with account as credit account' do
       booking = FactoryGirl.create(:booking, credit_account: account, debit_account: cash_account)
-      Booking.by_account(account.id).should include(booking)
+      expect(Booking.by_account(account.id)).to include(booking)
     end
 
     it 'should include bookings with account as credit and debit account' do
       booking = FactoryGirl.create(:booking, credit_account: account, debit_account: cash_account)
-      Booking.by_account(account.id).should include(booking)
+      expect(Booking.by_account(account.id)).to include(booking)
     end
 
     it 'should not include bookings not connected to account' do
       booking = FactoryGirl.create(:booking, credit_account: cash_account, debit_account: cash_account)
-      Booking.by_account(account.id).should_not include(booking)
+      expect(Booking.by_account(account.id)).not_to include(booking)
     end
   end
 
@@ -155,23 +155,23 @@ describe Booking do
     let(:debit_account) { FactoryGirl.create(:debit_account) }
 
     it 'should work if no bookings are present' do
-      Booking.accounts.should be_empty
+      expect(Booking.accounts).to be_empty
     end
 
     it 'should include debit accounts' do
       FactoryGirl.create(:booking, debit_account: cash_account)
-      Booking.accounts.should include(cash_account)
+      expect(Booking.accounts).to include(cash_account)
     end
 
     it 'should include credit accounts' do
       FactoryGirl.create(:booking, credit_account: cash_account)
-      Booking.accounts.should include(cash_account)
+      expect(Booking.accounts).to include(cash_account)
     end
 
     it 'should include accounts only once' do
       FactoryGirl.create(:booking, debit_account: debit_account, credit_account: cash_account)
       FactoryGirl.create(:booking, debit_account: cash_account, debit_account: debit_account)
-      Booking.accounts.count.should == 2
+      expect(Booking.accounts.count).to eq(2)
     end
   end
 
@@ -181,23 +181,23 @@ describe Booking do
     let(:debit_account) { FactoryGirl.create(:debit_account) }
 
     it 'should return empty hash if no bookings are present' do
-      Booking.balances.should == {}
+      expect(Booking.balances).to eq({})
     end
 
     it 'should use accounts as keys' do
       FactoryGirl.create(:booking, debit_account: cash_account)
-      Booking.balances.keys[0].should be_an Account
+      expect(Booking.balances.keys[0]).to be_an Account
     end
 
     it 'should include credit accounts' do
       FactoryGirl.create(:booking, credit_account: cash_account)
-      Booking.accounts.should include(cash_account)
+      expect(Booking.accounts).to include(cash_account)
     end
 
     it 'should include accounts only once' do
       FactoryGirl.create(:booking, debit_account: debit_account, credit_account: cash_account)
       FactoryGirl.create(:booking, debit_account: cash_account, debit_account: debit_account)
-      Booking.accounts.count.should == 2
+      expect(Booking.accounts.count).to eq(2)
     end
   end
 
@@ -228,26 +228,26 @@ describe Booking do
     context 'when accounted by debit_account' do
       it 'should use original amount for payment booking' do
         booking = FactoryGirl.create(:invoice_booking)
-        Booking.accounted_by(debit_account.id).count.should == 1
-        Booking.accounted_by(debit_account.id).first.amount.should == booking.amount
+        expect(Booking.accounted_by(debit_account.id).count).to eq(1)
+        expect(Booking.accounted_by(debit_account.id).first.amount).to eq(booking.amount)
       end
 
       it 'should use negated amount for payment booking' do
         booking = FactoryGirl.create(:payment_booking)
-        Booking.accounted_by(debit_account.id).count.should == 1
-        Booking.accounted_by(debit_account.id).first.amount.should == -booking.amount
+        expect(Booking.accounted_by(debit_account.id).count).to eq(1)
+        expect(Booking.accounted_by(debit_account.id).first.amount).to eq(-booking.amount)
       end
 
       it 'should use 0 as amount for booking having debit account as both debit and credit' do
         booking = FactoryGirl.create(:booking, debit_account: debit_account, credit_account: debit_account)
-        Booking.accounted_by(debit_account.id).count.should == 1
-        Booking.accounted_by(debit_account.id).first.amount.should == 0
+        expect(Booking.accounted_by(debit_account.id).count).to eq(1)
+        expect(Booking.accounted_by(debit_account.id).first.amount).to eq(0)
       end
 
       it 'should use 0 as amount for booking having debit account as neither debit and credit' do
         booking = FactoryGirl.create(:booking, credit_account: cash_account, debit_account: cash_account)
-        Booking.accounted_by(debit_account.id).count.should == 1
-        Booking.accounted_by(debit_account.id).first.amount.should == 0
+        expect(Booking.accounted_by(debit_account.id).count).to eq(1)
+        expect(Booking.accounted_by(debit_account.id).first.amount).to eq(0)
       end
     end
   end
@@ -283,7 +283,7 @@ describe Booking do
         FactoryGirl.create(:invoice_booking, amount: 5, value_date: '2013-10-12')
         FactoryGirl.create(:booking, amount: 99, credit_account: cash_account, debit_account: cash_account, value_date: '2013-10-12')
         FactoryGirl.create(:payment_booking, amount: 7, value_date: '2013-10-13')
-        Booking.balance_by(debit_account.id).should == -1
+        expect(Booking.balance_by(debit_account.id)).to eq(-1)
       end
 
       it 'takes conditions into account' do
@@ -292,20 +292,20 @@ describe Booking do
         FactoryGirl.create(:invoice_booking, amount: 5, value_date: '2013-10-12')
         FactoryGirl.create(:booking, amount: 99, credit_account: cash_account, debit_account: cash_account, value_date: '2013-10-12')
         FactoryGirl.create(:payment_booking, amount: 7, value_date: '2013-10-13')
-        Booking.by_value_period(nil, '2013-10-12').balance_by(debit_account.id).should == 6
+        expect(Booking.by_value_period(nil, '2013-10-12').balance_by(debit_account.id)).to eq(6)
       end
 
       it 'should handle non-integer amount' do
         FactoryGirl.create(:invoice_booking, amount: 10.5, value_date: '2013-10-10')
         FactoryGirl.create(:payment_booking, amount: 9.2, value_date: '2013-10-11')
-        Booking.balance_by(debit_account.id).should == 1.3
+        expect(Booking.balance_by(debit_account.id)).to eq(1.3)
       end
 
       it 'should ignore non-related bookings' do
         FactoryGirl.create(:invoice_booking, amount: 10.5, value_date: '2013-10-10')
         FactoryGirl.create(:payment_booking, amount: 9.2, value_date: '2013-10-11')
         FactoryGirl.create(:booking, amount: 100, value_date: '2013-10-11', debit_account: FactoryGirl.create(:accounts_payable), credit_account: FactoryGirl.create(:cash_account))
-        Booking.balance_by(debit_account.id).should == 1.3
+        expect(Booking.balance_by(debit_account.id)).to eq(1.3)
       end
     end
   end
@@ -316,14 +316,14 @@ describe Booking do
 
     it 'works with no bookings' do
       Booking.delete_all
-      Booking.unbalanced_by_grouped_reference(cash_account).should == {}
+      expect(Booking.unbalanced_by_grouped_reference(cash_account)).to eq({})
     end
 
     it 'does not include balanced references' do
       FactoryGirl.create(:invoice_booking, amount: 10, value_date: '2013-10-10', reference_id: 1)
       FactoryGirl.create(:payment_booking, amount: 11.5, value_date: '2013-10-11', reference_id: 1)
       FactoryGirl.create(:invoice_booking, amount: 1.5, value_date: '2013-10-12', reference_id: 1)
-      Booking.unbalanced_by_grouped_reference(debit_account).should == {}
+      expect(Booking.unbalanced_by_grouped_reference(debit_account)).to eq({})
     end
 
     it 'does include unbalanced references' do
@@ -331,10 +331,10 @@ describe Booking do
       FactoryGirl.create(:invoice_booking, amount: 0.5, value_date: '2013-10-11')
       FactoryGirl.create(:invoice_booking, amount: 10, value_date: '2013-10-10', reference_id: 1)
       FactoryGirl.create(:payment_booking, amount: 11.5, value_date: '2013-10-11', reference_id: 1)
-      Booking.unbalanced_by_grouped_reference(debit_account).should == {
+      expect(Booking.unbalanced_by_grouped_reference(debit_account)).to eq({
         [nil, nil] => 1.5,
         [nil, 1] => -1.5
-      }
+      })
     end
 
     it 'does respect conditions' do
@@ -342,10 +342,10 @@ describe Booking do
       FactoryGirl.create(:invoice_booking, amount: 0.5, value_date: '2013-10-11')
       FactoryGirl.create(:invoice_booking, amount: 10, value_date: '2013-10-10', reference_id: 1)
       FactoryGirl.create(:payment_booking, amount: 11.5, value_date: '2013-10-11', reference_id: 1)
-      Booking.where("value_date < '2013-10-11'").unbalanced_by_grouped_reference(debit_account).should == {
+      expect(Booking.where("value_date < '2013-10-11'").unbalanced_by_grouped_reference(debit_account)).to eq({
         [nil, nil] => 1,
         [nil, 1] => 10
-      }
+      })
     end
   end
 end
