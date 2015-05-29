@@ -31,6 +31,11 @@ group :test do
   gem 'pg'
 end
 
+group :tools do
+  # Debugger
+  gem 'pry-rails'
+end
+
 gem 'validates_timeliness'
 gem 'has_vcards'
 # Tagging
