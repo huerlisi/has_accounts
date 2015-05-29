@@ -75,6 +75,39 @@ class Booking < ActiveRecord::Base
     end
   }
 
+  # Scope filter for date range
+  scope :by_date_period, lambda {|date_from, date_to|
+    if date_from.present? && date_to.present?
+      where(:value_date => date_from..date_to)
+    elsif date_from.present?
+      where('value_date >= ?', date_from)
+    elsif date_to.present?
+      where('value_date <= ?', date_to)
+    end
+  }
+
+  # Scope for date filter
+  #
+  # @param from [Date]
+  # @param to [Date]
+  scope :by_date, lambda {|*args|
+    dates = args.map do |date|
+      begin
+        date.to_date
+      rescue
+        nil
+      end
+    end
+
+    if dates.count == 0
+      scoped
+    elsif dates.count == 1
+      where(:value_date => dates[0])
+    elsif dates.count == 2
+      by_date_period(dates[0], dates[1])
+    end
+  }
+
   # Scope for all accounts assigned to account
   #
   # @param account_id [Integer]

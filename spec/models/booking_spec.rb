@@ -26,6 +26,65 @@ describe Booking do
     it { should_not accept_values_for(:credit_account, nil) }
   end
 
+  describe '.by_date' do
+    let(:booking_today) { FactoryGirl.create(:booking, value_date: @date) }
+    let(:booking_past) { FactoryGirl.create(:booking, value_date: @date.yesterday) }
+    let(:booking_future) { FactoryGirl.create(:booking, value_date: @date.tomorrow) }
+
+    context 'with no arguments' do
+      it 'should find all bookings' do
+        @date = Date.parse('2011-05-02')
+
+        booking_today
+        booking_past
+        booking_future
+
+        expect(Booking.by_date).to contain_exactly(booking_today, booking_past, booking_future)
+      end
+    end
+
+    context 'with one argument' do
+      let!(:booking_today) { FactoryGirl.create(:booking, value_date: '2011-05-02') }
+      let!(:booking_other) { FactoryGirl.create(:booking, value_date: '2011-05-03') }
+
+      it 'should find bookings on exact day' do
+        expect(Booking.by_date(Date.parse('2011-05-02'))).to contain_exactly(booking_today)
+      end
+
+      it 'should handle DateTime argument' do
+        expect(Booking.by_date(DateTime.parse('2011-05-02'))).to contain_exactly(booking_today)
+      end
+
+      it 'should handle string argument' do
+        expect(Booking.by_date('2011-05-02')).to contain_exactly(booking_today)
+      end
+    end
+
+    context 'with two arguments' do
+      let!(:booking_before) { FactoryGirl.create(:booking, value_date: '2011-05-01') }
+      let!(:booking_today) { FactoryGirl.create(:booking, value_date: '2011-05-02') }
+      let!(:booking_after) { FactoryGirl.create(:booking, value_date: '2011-05-03') }
+
+      it 'should find bookings on start date' do
+        from = Date.parse('2011-05-02')
+        to = nil
+        expect(Booking.by_date(from, to)).to include(booking_today)
+      end
+
+      it 'should find bookings on end date' do
+        from = nil
+        to = Date.parse('2011-05-02')
+        expect(Booking.by_date(from, to)).to include(booking_today)
+      end
+
+      it 'should find bookings between start and end date' do
+        from = Date.parse('2011-05-01')
+        to = Date.parse('2011-05-03')
+        expect(Booking.by_date(from, to)).to contain_exactly(booking_before, booking_today, booking_after)
+      end
+    end
+  end
+
   describe '.by_value_date' do
     it 'should find bookings on exact day' do
       date = '2011-05-02'
