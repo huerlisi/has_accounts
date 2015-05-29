@@ -1,3 +1,13 @@
+3.0.0.beta0
+===========
+* fix(spec) fix deprecation warning.
+* fix(spec): add rspec-its
+* fix(travis): drop now unsupported ruby 1.9
+* fix(travis): do not build on ruby 2.2
+
+* feat(Booking): add Booking.by_date scope
+* feat(Booking): add Booking.by_date scope
+
 2.1.0
 =====
 FIXES
