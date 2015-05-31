@@ -7,7 +7,7 @@ class Account < ActiveRecord::Base
   default_scope order: 'code'
 
   # Dummy scope to make scoped_by happy
-  scope :by_value_period, scoped
+  scope :by_date, scoped
 
   # Validation
   validates_presence_of :code, :title

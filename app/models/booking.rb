@@ -66,15 +66,6 @@ class Booking < ActiveRecord::Base
   # Scoping
   default_scope order('value_date, id')
 
-  scope :by_value_date, lambda { |value_date| where('date(value_date) = ?', value_date) }
-  scope :by_value_period, lambda {|from, to|
-    if from.present?
-      where('date(value_date) BETWEEN :from AND :to', from: from, to: to)
-    else
-      where('date(value_date) <= :to', to: to)
-    end
-  }
-
   # Scope filter for date range
   scope :by_date_period, lambda {|date_from, date_to|
     if date_from.present? && date_to.present?

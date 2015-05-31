@@ -77,14 +77,6 @@ describe Booking do
     end
   end
 
-  describe '.by_value_date' do
-    it 'should find bookings on exact day' do
-      date = '2011-05-02'
-      booking = FactoryGirl.create(:booking, value_date: date)
-      expect(Booking.by_value_date(date)).to include booking
-    end
-  end
-
   describe '.by_amount' do
     let!(:booking_little) { FactoryGirl.create(:booking, amount: 0.1) }
     let!(:booking_medium) { FactoryGirl.create(:booking, amount: 1) }
@@ -292,7 +284,7 @@ describe Booking do
         FactoryGirl.create(:invoice_booking, amount: 5, value_date: '2013-10-12')
         FactoryGirl.create(:booking, amount: 99, credit_account: cash_account, debit_account: cash_account, value_date: '2013-10-12')
         FactoryGirl.create(:payment_booking, amount: 7, value_date: '2013-10-13')
-        expect(Booking.by_value_period(nil, '2013-10-12').balance_by(debit_account.id)).to eq(6)
+        expect(Booking.by_date(nil, '2013-10-12').balance_by(debit_account.id)).to eq(6)
       end
 
       it 'should handle non-integer amount' do
