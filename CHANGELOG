@@ -1,12 +1,18 @@
+3.0.0.beta1
+===========
+FEATURES
+* support Ruby 2.2
+
+BREAKING
+* drop the .by_value_date and .by_value_period scopes
+
 3.0.0.beta0
 ===========
-* fix(spec) fix deprecation warning.
-* fix(spec): add rspec-its
-* fix(travis): drop now unsupported ruby 1.9
-* fix(travis): do not build on ruby 2.2
-
-* feat(Booking): add Booking.by_date scope
-* feat(Booking): add Booking.by_date scope
+* fix deprecation warning.
+* add rspec-its
+* drop now unsupported ruby 1.9
+* do not build on ruby 2.2
+* add Booking.by_date scope
 
 2.1.0
 =====
