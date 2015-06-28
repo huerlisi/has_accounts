@@ -13,6 +13,7 @@ gem 'rails', '~> 3.2'
 # ====
 group :test do
   # Framework
+  gem 'test-unit'
   gem 'rspec'
   gem 'rspec-rails'
 
