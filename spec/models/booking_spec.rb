@@ -162,7 +162,7 @@ describe Booking do
 
     it 'should include accounts only once' do
       FactoryGirl.create(:booking, debit_account: debit_account, credit_account: cash_account)
-      FactoryGirl.create(:booking, debit_account: cash_account, debit_account: debit_account)
+      FactoryGirl.create(:booking, debit_account: cash_account, credit_account: debit_account)
       expect(Booking.accounts.count).to eq(2)
     end
   end
@@ -188,7 +188,7 @@ describe Booking do
 
     it 'should include accounts only once' do
       FactoryGirl.create(:booking, debit_account: debit_account, credit_account: cash_account)
-      FactoryGirl.create(:booking, debit_account: cash_account, debit_account: debit_account)
+      FactoryGirl.create(:booking, debit_account: cash_account, credit_account: debit_account)
       expect(Booking.accounts.count).to eq(2)
     end
   end
