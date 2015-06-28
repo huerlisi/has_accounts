@@ -38,3 +38,7 @@ RSpec.configure do |config|
   # Legacy
   config.infer_spec_type_from_file_location!
 end
+
+# NOTE: only needed for Ruby < 2.2
+# prevent Test::Unit's AutoRunner from executing during RSpec's rake task
+Test::Unit.run = true if defined?(Test::Unit) && Test::Unit.respond_to?(:run=)
