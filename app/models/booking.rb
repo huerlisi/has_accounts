@@ -160,7 +160,7 @@ class Booking < ActiveRecord::Base
 
   # Accounted bookings
   # ==================
-  SELECT_ACCOUNTED_AMOUNT =     'CASE WHEN credit_account_id = debit_account_id THEN 0.0 WHEN credit_account_id = %{account_id} THEN -bookings.amount WHEN debit_account_id = %{account_id} THEN bookings.amount ELSE 0 END'
+  SELECT_ACCOUNTED_AMOUNT = 'CASE WHEN credit_account_id = debit_account_id THEN 0.0 WHEN credit_account_id = %{account_id} THEN -bookings.amount WHEN debit_account_id = %{account_id} THEN bookings.amount ELSE 0 END'
 
   private
 
