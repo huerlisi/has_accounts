@@ -117,7 +117,7 @@ class BookingTemplate < ActiveRecord::Base
   # @return [Booking] unsaved Booking
   def self.build_booking(code, params = {})
     template = find_by_code(code)
-    fail "BookingTemplate not found for '#{code}'" unless template
+    raise ActiveRecord::RecordNotFound,  "BookingTemplate not found for '#{code}'" unless template
 
     template.build_booking params
   end

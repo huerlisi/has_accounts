@@ -209,12 +209,7 @@ describe Booking do
 
     it 'should raise exception for not existing Account id as parameter' do
       booking = FactoryGirl.create(:invoice_booking)
-      expect { Booking.accounted_by(999_999).all }.to raise_exception
-    end
-
-    it 'should raise exception non Account type records as parameter' do
-      booking = FactoryGirl.create(:invoice_booking)
-      expect { Booking.accounted_by(Object.new).all }.to raise_exception
+      expect { Booking.accounted_by(999_999).all }.to raise_exception ActiveRecord::RecordNotFound
     end
 
     context 'when accounted by debit_account' do
@@ -260,12 +255,7 @@ describe Booking do
 
     it 'should raise exception for not existing Account id as parameter' do
       booking = FactoryGirl.create(:invoice_booking)
-      expect { Booking.balance_by(999_999) }.to raise_exception
-    end
-
-    it 'should raise exception non Account type records as parameter' do
-      booking = FactoryGirl.create(:invoice_booking)
-      expect { Booking.balance_by(Object.new) }.to raise_exception
+      expect { Booking.balance_by(999_999) }.to raise_exception ActiveRecord::RecordNotFound
     end
 
     context 'when accounted by debit_account' do

@@ -4,7 +4,7 @@ describe BookingTemplate do
   context 'Factory methods' do
     describe '.build_booking' do
       it 'should raise an exception if no matching template can be found' do
-        expect { BookingTemplate.build_booking('not found') }.to raise_exception
+        expect { BookingTemplate.build_booking('not found') }.to raise_exception ActiveRecord::RecordNotFound
       end
 
       it 'should call build_booking on the matching template' do

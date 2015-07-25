@@ -170,7 +170,7 @@ class Booking < ActiveRecord::Base
     elsif Account.exists?(account_or_id)
       return account_or_id
     else
-      fail 'argument needs to be a record of type Account or an id for an existing Account record.'
+      raise ActiveRecord::RecordNotFound, 'argument needs to be a record of type Account or an id for an existing Account record.'
     end
   end
 
