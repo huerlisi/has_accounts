@@ -77,6 +77,9 @@ class Booking < ActiveRecord::Base
     end
   }
 
+  # Scope for code filter
+  scope :by_code, -> (code) { where(code: code) }
+
   # Scope for date filter
   #
   # @param from [Date]
