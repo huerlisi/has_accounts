@@ -13,8 +13,13 @@ class Account < ActiveRecord::Base
   validates_presence_of :code, :title
 
   # String
-  def to_s(_format = :default)
-    '%s (%s)' % [title, code]
+  def to_s(format = :default)
+    case format
+    when :select
+      '%s - %s' % [code, title]
+    else
+      '%s (%s)' % [title, code]
+    end
   end
 
   # Parent Account
