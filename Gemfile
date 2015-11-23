@@ -40,4 +40,4 @@ end
 gem 'validates_timeliness'
 gem 'has_vcards'
 # Tagging
-gem 'acts-as-taggable-on'
+gem 'acts-as-taggable-on', '~> 2.4.1' # API incompatible
