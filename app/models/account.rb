@@ -51,6 +51,17 @@ class Account < ActiveRecord::Base
   # Tagging
   # =======
   if defined?(ActsAsTaggableOn) && ActsAsTaggableOn::Tag.table_exists?
+    class Account::AmbiguousTag < StandardError
+      def initialize(tag, count)
+        @tag = tag
+        @count = count
+      end
+
+      def to_s
+        "Given tag '#{@tag}' is ambiguous, found #{@count} records"
+      end
+    end
+
     acts_as_taggable
     attr_accessible :tag_list
 
@@ -60,6 +71,13 @@ class Account < ActiveRecord::Base
 
     def self.tag_collection
       (default_tags + Account.tag_counts.pluck(:name)).uniq
+    end
+
+    def self.find_by_tag(tag)
+      accounts = tagged_with(tag)
+      count = accounts.count
+      raise Account::AmbiguousTag.new(tag, count) if count > 1
+      accounts.first
     end
   end
 
