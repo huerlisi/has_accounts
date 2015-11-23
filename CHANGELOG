@@ -1,3 +1,18 @@
+<a name="3.0.0.beta2"></a>
+## 3.0.0.beta2 (2015-11-23)
+
+
+#### Features
+
+* **Account**  implement Account.find_by_tag ((aee209db))
+* **booking**  allow filtering by code ((d1749c6d))
+
+#### Bug Fixes
+
+* **Gemfile**  pin acts-as-taggable gem to compatible version ((b9c72643))
+
+
+
 3.0.0.beta1
 ===========
 FEATURES
