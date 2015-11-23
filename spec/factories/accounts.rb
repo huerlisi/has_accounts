@@ -1,9 +1,17 @@
 FactoryGirl.define do
+  sequence :account_code do |n|
+    "9%03i" % n
+  end
+end
+
+FactoryGirl.define do
   factory :account do
-    code '0000'
+    code { FactoryGirl.generate(:account_code) }
     title 'Test Account'
     association :account_type
-    initialize_with { Account.where(code: code).first || Account.create(code: code) }
+    initialize_with do
+      Account.where(code: code).first || Account.create(code: code)
+    end
 
     factory :accounts_payable, parent: :account do
       code '2000'
