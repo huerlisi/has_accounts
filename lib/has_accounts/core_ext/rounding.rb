@@ -15,14 +15,14 @@ module HasAccounts #:nodoc:
         end
       end
     end
-    
+
     module BigDecimal
       module Rounding
         def currency_round
           if self.nil?
             return BigDecimal.new("0")
           else
-            return (self * 20).round / 20
+            return (self * 20).round / 20.0
           end
         end
       end
