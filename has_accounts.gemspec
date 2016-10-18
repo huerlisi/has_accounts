@@ -26,6 +26,6 @@ Gem::Specification.new do |s|
   s.platform     = Gem::Platform::RUBY
 
   # Dependencies
-  s.add_runtime_dependency('rails', ['~> 3.1'])
+  s.add_runtime_dependency('rails', ['> 3.1'])
   s.add_runtime_dependency('validates_timeliness')
 end
